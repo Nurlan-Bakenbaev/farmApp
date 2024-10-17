@@ -1,5 +1,5 @@
 "use client";
-import { Link } from "@chakra-ui/react";
+import { Link, useToast } from "@chakra-ui/react";
 
 import {
   Box,
@@ -24,14 +24,26 @@ const Login = () => {
   const { user, loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const router = useRouter();
-
+  const toast = useToast();
   useEffect(() => {
     if (user) {
+      toast({
+        title: "Welcome back!",
+        description: `You have successfully logged in.`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
       router.push("/");
     }
-    console.log(user)
+    console.log(user);
   }, [user, router]);
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleLogin(e);
+    }
+  };
 
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -61,6 +73,7 @@ const Login = () => {
             onChange={handleChange}
           />
           <Input
+            onKeyDown={handleKeyDown}
             type="password"
             placeholder="Password"
             name="password"

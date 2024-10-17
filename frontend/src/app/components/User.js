@@ -6,7 +6,6 @@ import { logout } from "../redux/features/userSlice";
 import { useDispatch } from "react-redux";
 
 const User = ({ user }) => {
-  const { name, img } = user;
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -14,22 +13,19 @@ const User = ({ user }) => {
     localStorage.removeItem("token");
     window.location.href = "/";
   };
-  
+
   return (
     <Flex alignItems={"center"} gap={3}>
       <Wrap>
         <WrapItem display={{ base: "none", md: "block" }}>
           <Avatar
-            title={name}
+            title={user?.name}
             size="md"
-            name={name}
-            src={img || <MdAccountCircle />}
+            src={user?.img || <MdAccountCircle />}
           />
         </WrapItem>
       </Wrap>
-      <Button onClick={handleLogout}>
-        <IoIosLogOut />
-      </Button>
+      <Button onClick={handleLogout}>Log out</Button>
     </Flex>
   );
 };

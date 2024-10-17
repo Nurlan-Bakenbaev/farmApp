@@ -16,7 +16,7 @@ export const signUp = async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res
-        .status(200)
+        .status(409)
         .json({ success: false, message: "User already exists!" });
     }
     const hashedPassword = await doHash(password, 12);
@@ -77,6 +77,7 @@ export const signIn = async (req, res) => {
         user: {
           name: existingUser.name,
           email: existingUser.email,
+          userId: existingUser.id,
         },
         token: token,
         message: "Logged in successfully",

@@ -24,7 +24,7 @@ export default function Footer() {
         </Stack>
       </Container>
 
-      <Box borderTopWidth={1} borderStyle={"solid"}>
+      <Box>
         <Container
           mb={"20px"}
           as={Stack}

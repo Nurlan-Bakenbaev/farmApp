@@ -25,8 +25,9 @@ export const loginUser = createAsyncThunk(
       const res = await axios.post(
         "http://localhost:8000/user/signin",
         userData,
-        { withCredentials: true } // If your API uses cookies
+        { withCredentials: true }
       );
+
       return res.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -47,12 +48,12 @@ const userSlice = createSlice({
     },
     logout: (state) => {
       state.user = null;
-      localStorage.removeItem("user"); 
+      localStorage.removeItem("user");
     },
   },
   extraReducers: (builder) => {
+    // SIGN UP
     builder
-      // Sign Up Flow
       .addCase(postUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -67,6 +68,8 @@ const userSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       });
+
+    //LOGIN
 
     builder
       .addCase(loginUser.pending, (state) => {

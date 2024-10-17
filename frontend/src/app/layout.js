@@ -2,21 +2,16 @@ import localFont from "next/font/local";
 import "./globals.css";
 import ReduxProvider from "./components/ReduxWrapper";
 import { ChakraUIProviders } from "./providers/ChakraProvider";
-import Navbar from "./components/Navbar";
-import { Box } from "@chakra-ui/react";
+import Navbar from "./components/Navbar.jsx";
+import { Box, Text } from "@chakra-ui/react";
 import Footer from "./components/Footer";
+import { Roboto } from "@next/font/google";
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const roboto = Roboto({
+  weight: ["400", "500", "700"],
+  subsets: ["latin"],
+  style: ["normal", "italic"],
 });
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
-
 export const metadata = {
   title: "Anzeigen",
   description: "",
@@ -25,11 +20,17 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body>
         <ReduxProvider>
           <ChakraUIProviders>
             <Navbar />
-            <Box mx="auto" my={"20px"} minH={"80vh"}  maxW={"80%"}>
+            <Box
+              className={roboto.className}
+              px={"5%"}
+              mx="auto"
+              my={"20px"}
+              minH={"80vh"}
+              maxW={{ base: "100%", md: "90%", lg: "80%" }}>
               {children}
             </Box>
             <Footer />

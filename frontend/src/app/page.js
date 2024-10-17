@@ -1,6 +1,6 @@
 import React from "react";
 import CardComponent from "./components/Card";
-import { Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 
 const HomePage = () => {
   const cardData = [
@@ -42,11 +42,11 @@ const HomePage = () => {
     },
   ];
   return (
-    <div>
-      <Text fontSize="xl" mb={4}>
+    <Box>
+      <Text fontSize="2xl" mb={4}>
         New Advertisements
       </Text>
-      <Flex justifyContent={"center"} wrap={"wrap"} gap={3}>
+      <Flex justifyContent="center" wrap={"wrap"} gap={3}>
         {cardData.map((cardData) => (
           <CardComponent
             key={cardData.title}
@@ -56,7 +56,7 @@ const HomePage = () => {
           />
         ))}
       </Flex>
-    </div>
+    </Box>
   );
 };
 export default HomePage;
