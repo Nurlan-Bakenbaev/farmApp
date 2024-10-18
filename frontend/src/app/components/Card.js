@@ -1,7 +1,17 @@
 import React from 'react';
-import { Box, Image, Text, Button, Stack } from '@chakra-ui/react';
+import { Box, Image, Text, Button, Stack, Flex, WrapItem, Avatar } from '@chakra-ui/react';
+import Link from 'next/link';
+import { FcLikePlaceholder } from 'react-icons/fc';
+import { FcLike } from 'react-icons/fc';
+import { Badge } from '@chakra-ui/react';
+const CardComponent = ({ name, price, imageUrl, minOrder,userId, id, cat, quantity }) => {
+ const [liked, setLiked] = React.useState(false);
 
-const CardComponent = ({ title, description, imageUrl }) => {
+ const handleLikeClick = (e) => {
+  e.stopPropagation();
+  setLiked(!liked);
+ };
+
  return (
   <Box
    maxW="xs"
@@ -12,19 +22,63 @@ const CardComponent = ({ title, description, imageUrl }) => {
    transition="transform 0.5s"
    _hover={{ transform: 'scale(1.01)' }}
   >
-   <img w={'100%'} src={imageUrl} alt={title} />
+   <Box position="relative">
+    <Badge
+     title="This Product is a Bio product"
+     position="absolute"
+     bottom="15px"
+     left="10px"
+     ml="1"
+     fontSize="0.8em"
+     colorScheme="green"
+    >
+     BIO
+    </Badge>
+
+    <Button position="absolute" top="10px" right="10px" onClick={handleLikeClick}>
+     {liked ? <FcLike fontSize={30} /> : <FcLikePlaceholder fontSize={30} />}
+    </Button>
+    <Link href={`/single-product/${id}`}>
+     <Image borderRadius={'8px'} width="100%" height="100%" src={imageUrl} alt="Product-photo" />
+    </Link>
+   </Box>
+
    <Box p="4">
     <Stack spacing={3}>
-     <Text fontWeight="bold" fontSize="xl">
-      {title}
+     <Text
+      borderBottom={'1px solid gray'}
+      pb={2}
+      textAlign={'center'}
+      fontWeight="bold"
+      fontSize="2xl"
+     >
+      {name}
      </Text>
-     <Text fontSize="md">{description}</Text>
+     <Flex textAlign={'center'} gap={2}>
+      <Text fontSize="md">Price: ${price} per/kg</Text>
+      <Text fontSize="md">Min order: {minOrder} </Text>
+     </Flex>
+
+     <Flex
+      borderTop={'1px solid gray'}
+      alignItems={'center'}
+      justifyContent={'center'}
+      gap={3}
+      fontSize="md"
+      pt={'10px'}
+     >
+      <Link href={`/products-owner/${userId}`}>
+       <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+      </Link>
+      <Link className="nav-Link" href={`/cat/${cat}`}>
+       {cat}
+      </Link>
+      {quantity} in stock
+     </Flex>
     </Stack>
-    <Button mt={4} colorScheme="teal">
-     View More
-    </Button>
    </Box>
   </Box>
  );
 };
+
 export default CardComponent;

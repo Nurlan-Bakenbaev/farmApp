@@ -13,7 +13,7 @@ export const postProduct = async (req, res) => {
     ...product,
     user: product.userId,
     image: imagePaths,
-  }); // Include image in the product object
+  }); 
 
   try {
     await newProduct.save();

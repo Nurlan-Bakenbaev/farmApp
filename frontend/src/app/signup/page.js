@@ -20,18 +20,25 @@ const Login = () => {
  const [userData, setUserData] = useState({
   email: '',
   password: '',
-  name: ''
+  name: '',
+  photo: null
  });
  const [validationMessage, setValidationMessage] = useState('');
  const [formError, setFormError] = useState(true);
- const { user, loading, error } = useSelector(state => state.user);
+ const { user, loading, error } = useSelector((state) => state.user);
  const dispatch = useDispatch();
  const router = useRouter();
- const handleChange = e => {
-  setUserData({ ...userData, [e.target.name]: e.target.value });
+ const handleChange = (e) => {
+  const { name, value, type, files } = e.target;
+
+  if (type === 'file') {
+   setUserData({ ...userData, photo: files[0] });
+  } else {
+   setUserData({ ...userData, [name]: value });
+  }
  };
 
- const handleLogin = e => {
+ const handleLogin = (e) => {
   e.preventDefault();
   const { status, message } = userValidator(userData.password);
   if (!status) {
@@ -39,8 +46,12 @@ const Login = () => {
    setValidationMessage(message);
    return;
   }
+  const formData = new FormData();
+  for (const key in userData) {
+   formData.append(key, userData[key]);
+  }
   setValidationMessage('');
-  dispatch(postUser(userData));
+  dispatch(postUser(formData));
  };
  if (loading) {
   <Loading />;
@@ -73,11 +84,7 @@ const Login = () => {
       value={userData.email}
       onChange={handleChange}
      />
-     {userData.email && (
-      <FormHelperText color={'red'}>
-       {error ? error.message : "We'll never share your credentials"}
-      </FormHelperText>
-     )}
+     {userData.email && <FormHelperText color={'red'}>{error && error.message}</FormHelperText>}
      <Input
       isRequired
       type="password"
@@ -87,6 +94,7 @@ const Login = () => {
       onChange={handleChange}
      />
      {!formError && <FormHelperText color={'red'}>{validationMessage}</FormHelperText>}
+     <Input type="file" accept="image/*" name="photo" onChange={handleChange} />
      <Flex>
       <Button
        isLoading={error || user ? false : loading}

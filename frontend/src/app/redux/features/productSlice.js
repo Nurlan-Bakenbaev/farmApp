@@ -5,7 +5,7 @@ import axios from 'axios';
 export const createProduct = createAsyncThunk('product/createProduct', async (productData, { rejectWithValue }) => {
  try {
   const res = await axios.post('http://localhost:8000/api/product', productData, { withCredentials: true });
-  console.log(productData);
+
   return res.data;
  } catch (error) {
   return rejectWithValue(error.response.data);

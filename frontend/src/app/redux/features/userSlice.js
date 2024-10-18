@@ -1,92 +1,85 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 // Thunk for Sign Up
-export const postUser = createAsyncThunk(
-  "user/postUser",
-  async (userData, { rejectWithValue }) => {
-    try {
-      const res = await axios.post(
-        "http://localhost:8000/user/signup",
-        userData
-      );
-      return res.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
+export const postUser = createAsyncThunk('user/postUser', async (formData, { rejectWithValue }) => {
+ try {
+  const res = await axios.post('http://localhost:8000/user/signup', formData, {
+   headers: {
+    'Content-Type': 'multipart/form-data'
+   }
+  });
+  return res.data;
+ } catch (error) {
+  return rejectWithValue(error.response.data);
+ }
+});
 
 // Thunk for Login
-export const loginUser = createAsyncThunk(
-  "user/login",
-  async (userData, { rejectWithValue }) => {
-    try {
-      const res = await axios.post(
-        "http://localhost:8000/user/signin",
-        userData,
-        { withCredentials: true }
-      );
+export const loginUser = createAsyncThunk('user/login', async (userData, { rejectWithValue }) => {
+ try {
+  const res = await axios.post('http://localhost:8000/user/signin', userData, {
+   withCredentials: true
+  });
 
-      return res.data;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
-  }
-);
+  return res.data;
+ } catch (error) {
+  return rejectWithValue(error.response.data);
+ }
+});
 
 const userSlice = createSlice({
-  name: "user",
-  initialState: {
-    user: null,
-    loading: false,
-    error: null,
+ name: 'user',
+ initialState: {
+  user: null,
+  loading: false,
+  error: null
+ },
+ reducers: {
+  setUserFromStorage: (state, action) => {
+   state.user = action.payload;
   },
-  reducers: {
-    setUserFromStorage: (state, action) => {
-      state.user = action.payload;
-    },
-    logout: (state) => {
-      state.user = null;
-      localStorage.removeItem("user");
-    },
-  },
-  extraReducers: (builder) => {
-    // SIGN UP
-    builder
-      .addCase(postUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(postUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user = action.payload;
-        state.error = null;
-        localStorage.setItem("user", JSON.stringify(action.payload));
-      })
-      .addCase(postUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      });
+  logout: (state) => {
+   state.user = null;
+   localStorage.removeItem('user');
+  }
+ },
+ extraReducers: (builder) => {
+  // SIGN UP
+  builder
+   .addCase(postUser.pending, (state) => {
+    state.loading = true;
+    state.error = null;
+   })
+   .addCase(postUser.fulfilled, (state, action) => {
+    state.loading = false;
+    state.user = action.payload;
+    state.error = null;
+    localStorage.setItem('user', JSON.stringify(action.payload));
+   })
+   .addCase(postUser.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+   });
 
-    //LOGIN
+  //LOGIN
 
-    builder
-      .addCase(loginUser.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(loginUser.fulfilled, (state, action) => {
-        state.loading = false;
-        state.user = action.payload;
-        state.error = null;
-        localStorage.setItem("user", JSON.stringify(action.payload));
-      })
-      .addCase(loginUser.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload || "Failed to log in";
-      });
-  },
+  builder
+   .addCase(loginUser.pending, (state) => {
+    state.loading = true;
+    state.error = null;
+   })
+   .addCase(loginUser.fulfilled, (state, action) => {
+    state.loading = false;
+    state.user = action.payload;
+    state.error = null;
+    localStorage.setItem('user', JSON.stringify(action.payload));
+   })
+   .addCase(loginUser.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload || 'Failed to log in';
+   });
+ }
 });
 
 export const { logout, setUserFromStorage } = userSlice.actions;

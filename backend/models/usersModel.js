@@ -19,7 +19,8 @@ const userSchema = mongoose.Schema(
       required: [true, "Password is required"],
       trim: true,
     },
-    photoUrl: String,
+    userchecked: { type: Boolean, default: false },
+    photo: String,
     products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
   },
   { timestamps: true }

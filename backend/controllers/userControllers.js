@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 ///SIGH-UP///
 export const signUp = async (req, res) => {
   const { email, password, name } = req.body;
+  const photo = req.file;
   try {
     const { error, value } = signUpValidation.validate({ email, password });
     if (error) {
@@ -20,7 +21,13 @@ export const signUp = async (req, res) => {
         .json({ success: false, message: "User already exists!" });
     }
     const hashedPassword = await doHash(password, 12);
-    const newUser = new User({ email, password: hashedPassword, name });
+    const photoPath = photo ? photo.path : null;
+    const newUser = new User({
+      email,
+      password: hashedPassword,
+      name,
+      photo: photoPath,
+    });
     const result = await newUser.save();
     result.password = undefined;
     res.status(201).json({

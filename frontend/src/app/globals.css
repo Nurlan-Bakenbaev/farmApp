@@ -22,7 +22,8 @@
  height: 400px;
 }
 
-.image-container .img {
+.image-container .img,
+.image-animation {
  width: 100%;
  height: 100%;
  object-fit: cover;

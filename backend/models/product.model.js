@@ -7,10 +7,15 @@ const productsSchema = new mongoose.Schema(
     price: { type: Number, required: true },
     description: { type: String, required: true, maxlength: 1000 },
     category: String,
-    quantity: Number,
+    quantity: String,
     minOrder: String,
-    stock: String,
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    userName: String,
+    telephone: Number,
+    address: String,
+    city: String,
+    state: String,
+    delivery: String,
   },
   { timestamps: true }
 );

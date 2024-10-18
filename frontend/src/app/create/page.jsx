@@ -14,7 +14,9 @@ import {
  Text,
  Stack,
  Image,
- Flex
+ Flex,
+ RadioGroup,
+ Radio
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -23,7 +25,7 @@ import { categories } from '../utils/categories';
 import { createProduct } from '../redux/features/productSlice';
 
 const CreateProductForm = () => {
- const { user, loading, error } = useSelector(state => state.user);
+ const { user, loading, error } = useSelector((state) => state.user);
  const [productFormData, setFormData] = useState({
   name: '',
   price: '',
@@ -31,49 +33,54 @@ const CreateProductForm = () => {
   category: '',
   quantity: '',
   minOrder: '',
-  userId: null
+  telephone: '',
+  address: '',
+  userId: null,
+  userName: null
  });
- const { loading: productLoading, error: productError, success } = useSelector(state => state.product);
+ const {
+  loading: productLoading,
+  error: productError,
+  success
+ } = useSelector((state) => state.product);
  const [files, setFiles] = useState([]);
  const [filePreviews, setFilePreviews] = useState([]);
  const router = useRouter();
  const toast = useToast();
  const dispatch = useDispatch();
  useEffect(() => {
-  if (user?.user?.userId) {
-   setFormData(prevFormData => ({
+  if (user) {
+   setFormData((prevFormData) => ({
     ...prevFormData,
-    userId: user.user.userId
+    userId: user.user._id,
+    userName: user.user.name
    }));
   }
  }, [user]);
- const handleChange = e => {
+ const handleChange = (e) => {
   const { name, value } = e.target;
-  setFormData(prev => ({ ...prev, [name]: value }));
+  setFormData((prev) => ({ ...prev, [name]: value }));
  };
-
- const handleFilesChange = e => {
+ const handleFilesChange = (e) => {
   const newFiles = Array.from(e.target.files);
   const updatedFiles = [...files, ...newFiles];
   setFiles(updatedFiles);
 
-  const newPreviews = newFiles.map(file => URL.createObjectURL(file));
-  setFilePreviews(prevPreviews => [...prevPreviews, ...newPreviews]);
+  const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
+  setFilePreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
  };
 
- const handleSubmit = async e => {
+ const handleSubmit = async (e) => {
   e.preventDefault();
 
   const formData = new FormData();
 
-  // Append other product details
-  Object.keys(productFormData).forEach(key => {
+  Object.keys(productFormData).forEach((key) => {
    formData.append(key, productFormData[key]);
   });
 
-  // Append files directly (should match the field name used in your backend)
-  files.forEach(file => {
-   formData.append('files', file); // Ensure 'files' matches the multer configuration
+  files.forEach((file) => {
+   formData.append('files', file);
   });
 
   try {
@@ -102,7 +109,7 @@ const CreateProductForm = () => {
 
  useEffect(() => {
   return () => {
-   filePreviews.forEach(filePreview => URL.revokeObjectURL(filePreview));
+   filePreviews.forEach((filePreview) => URL.revokeObjectURL(filePreview));
   };
  }, [filePreviews]);
 
@@ -153,8 +160,13 @@ const CreateProductForm = () => {
        {/* Category */}
        <FormControl>
         <FormLabel fontSize={11}>Category</FormLabel>
-        <Select placeholder="Select category" name="category" value={productFormData.category} onChange={handleChange}>
-         {categories.map(cat => (
+        <Select
+         placeholder="Select category"
+         name="category"
+         value={productFormData.category}
+         onChange={handleChange}
+        >
+         {categories.map((cat) => (
           <option key={cat} value={cat}>
            {cat}
           </option>
@@ -176,13 +188,38 @@ const CreateProductForm = () => {
        </FormControl>
       </Stack>
       <Stack w="full" direction={{ base: 'column', md: 'row' }} spacing={4} alignItems="center">
+       <FormControl>
+        <FormLabel fontSize={11}>Address</FormLabel>
+        <Input
+         type="text"
+         name="address"
+         placeholder="Enter address City, Street"
+         value={productFormData.address}
+         onChange={handleChange}
+        />
+       </FormControl>
+
+       {/* telephone */}
+       <FormControl>
+        <FormLabel fontSize={11}>Telephone</FormLabel>
+        <NumberInput min={6}>
+         <NumberInputField
+          name="telephone"
+          placeholder="Quantity in stock"
+          value={productFormData.telephone}
+          onChange={handleChange}
+         />
+        </NumberInput>
+       </FormControl>
+      </Stack>
+      <Stack w="full" direction={{ base: 'column', md: 'row' }} spacing={4} alignItems="center">
        {/* Minimum Order */}
        <FormControl>
         <FormLabel fontSize={11}>Minimum Order</FormLabel>
         <Input
          type="text"
          name="minOrder"
-         placeholder="Minimum order quantity"
+         placeholder="Example 10 kg"
          value={productFormData.minOrder}
          onChange={handleChange}
         />
@@ -193,8 +230,12 @@ const CreateProductForm = () => {
         <Input type="file" name="photos" multiple accept="image/*" onChange={handleFilesChange} />
        </FormControl>
       </Stack>
-
-      <Button type="submit" colorScheme="purple" width="full" isLoading={productLoading}>
+      <Button
+       type="submit"
+       bgGradient="linear(to-r, teal.400, teal.500, teal.600)"
+       width="full"
+       isLoading={productLoading}
+      >
        Submit
       </Button>
      </VStack>
