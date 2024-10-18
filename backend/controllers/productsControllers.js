@@ -2,13 +2,12 @@ import Product from "../models/product.model.js";
 
 export const postProduct = async (req, res) => {
   const product = req.body;
-
   if (!product.name || !product.userId) {
     return res
       .status(400)
       .json({ success: false, message: "Please provide all fields" });
   }
-  const newProduct = new Product(product);
+  const newProduct = new Product({ ...product, user: product.userId });
   try {
     await newProduct.save();
     res.status(201).json({
