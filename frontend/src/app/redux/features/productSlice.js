@@ -11,8 +11,18 @@ export const createProduct = createAsyncThunk('product/createProduct', async (pr
   return rejectWithValue(error.response.data);
  }
 });
+
+//Get All products
+export const getAllProducts = createAsyncThunk('product/getAllProducts', async (_, { rejectWithValue }) => {
+ try {
+  const res = await axios.get('http://localhost:8000/api/product', { withCredentials: true });
+  return res.data.products;
+ } catch (error) {
+  return rejectWithValue(error.response.data);
+ }
+});
 const initialState = {
- product: null,
+ products: [],
  loading: false,
  success: false,
  error: null
@@ -22,7 +32,7 @@ const productSlice = createSlice({
  initialState,
  reducers: {
   resetProductState: state => {
-   state.product = null;
+   state.products = [];
    state.loading = false;
    state.success = false;
    state.error = null;
@@ -48,6 +58,22 @@ const productSlice = createSlice({
     state.loading = false;
     state.success = false;
     state.error = action.payload || 'Failed to create product';
+   }) // Handle actions for fetching products
+   .addCase(getAllProducts.pending, state => {
+    state.loading = true;
+    state.success = false;
+    state.error = null;
+   })
+   .addCase(getAllProducts.fulfilled, (state, action) => {
+    state.loading = false;
+    state.success = true;
+    state.products = action.payload;
+    state.error = null;
+   })
+   .addCase(getAllProducts.rejected, (state, action) => {
+    state.loading = false;
+    state.success = false;
+    state.error = action.payload || 'Failed to fetch products';
    });
  }
 });

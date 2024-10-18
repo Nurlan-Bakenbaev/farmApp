@@ -2,7 +2,7 @@ import Product from "../models/product.model.js";
 
 export const postProduct = async (req, res) => {
   const product = req.body;
-  console.log(product)
+  console.log(product);
   if (!product.name || !product.userId) {
     return res
       .status(400)
@@ -38,7 +38,7 @@ export const getOneProduct = async (req, res) => {
 export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
-    res.json({ success: true, quantity: products.length, data: products });
+    res.json({ success: true, quantity: products.length,  products });
   } catch (error) {
     res.status(500).json({ error: error });
   }
