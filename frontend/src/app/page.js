@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts, resetProductState } from './redux/features/productSlice';
 import { Skeleton, SkeletonCircle, SkeletonText } from '@chakra-ui/react';
 import Image from 'next/image';
+import Loading from './components/Loading';
 const HomePage = () => {
  const { products, loading, success, error } = useSelector(state => state.product);
  const dispatch = useDispatch();
@@ -17,15 +18,9 @@ const HomePage = () => {
  }, [dispatch]);
  console.log(products, products.image);
  if (loading) {
-  return (
-   <HStack>
-    <Skeleton height="100px" />
-    <Skeleton height="100px" />
-    <Skeleton height="100px" />
-   </HStack>
-  );
+  <Loading />;
+  return;
  }
-
  if (error) {
   return <div>Error: {error}</div>;
  }
@@ -45,7 +40,9 @@ const HomePage = () => {
       />
      ))
     ) : (
-     <Image src="/nodata.png" alt="No Products" width={600} height={600} />
+     <Box className="image-container">
+      <Image className="img" src="/empty.png" width={500} height={500} alt="No-Data" />{' '}
+     </Box>
     )}
    </Flex>
   </Box>
