@@ -59,6 +59,7 @@ const Login = () => {
         Login with Account
       </Heading>
       <Box
+      className={`${error && "shake"}`}
         w={"full"}
         bg={useColorModeValue("gray.100", "gray.900")}
         p={6}
