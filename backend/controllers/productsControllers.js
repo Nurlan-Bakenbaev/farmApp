@@ -2,12 +2,19 @@ import Product from "../models/product.model.js";
 
 export const postProduct = async (req, res) => {
   const product = req.body;
+  console.log(product)
   if (!product.name || !product.userId) {
     return res
       .status(400)
       .json({ success: false, message: "Please provide all fields" });
   }
-  const newProduct = new Product({ ...product, user: product.userId });
+  const imagePaths = req.files.map((file) => file.path);
+  const newProduct = new Product({
+    ...product,
+    user: product.userId,
+    image: imagePaths,
+  }); // Include image in the product object
+
   try {
     await newProduct.save();
     res.status(201).json({

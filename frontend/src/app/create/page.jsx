@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import {
  Box,
  Button,
@@ -15,15 +15,15 @@ import {
  Stack,
  Image,
  Flex
-} from '@chakra-ui/react'
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { useDispatch, useSelector } from 'react-redux'
-import { categories } from '../utils/categories'
-import { createProduct } from '../redux/features/productSlice'
+} from '@chakra-ui/react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { categories } from '../utils/categories';
+import { createProduct } from '../redux/features/productSlice';
 
 const CreateProductForm = () => {
- const { user, loading, error } = useSelector(state => state.user)
+ const { user, loading, error } = useSelector(state => state.user);
  const [productFormData, setFormData] = useState({
   name: '',
   price: '',
@@ -32,70 +32,79 @@ const CreateProductForm = () => {
   quantity: '',
   minOrder: '',
   userId: null
- })
- const { loading: productLoading, error: productError, success } = useSelector(state => state.product)
- const [files, setFiles] = useState([])
- const [filePreviews, setFilePreviews] = useState([])
- const router = useRouter()
- const toast = useToast()
- const dispatch = useDispatch()
+ });
+ const { loading: productLoading, error: productError, success } = useSelector(state => state.product);
+ const [files, setFiles] = useState([]);
+ const [filePreviews, setFilePreviews] = useState([]);
+ const router = useRouter();
+ const toast = useToast();
+ const dispatch = useDispatch();
  useEffect(() => {
   if (user?.user?.userId) {
    setFormData(prevFormData => ({
     ...prevFormData,
     userId: user.user.userId
-   }))
+   }));
   }
- }, [user])
+ }, [user]);
  const handleChange = e => {
-  const { name, value } = e.target
-  setFormData(prev => ({ ...prev, [name]: value }))
- }
+  const { name, value } = e.target;
+  setFormData(prev => ({ ...prev, [name]: value }));
+ };
 
  const handleFilesChange = e => {
-  const newFiles = Array.from(e.target.files)
-  const updatedFiles = [...files, newFiles]
-  setFiles(updatedFiles)
+  const newFiles = Array.from(e.target.files);
+  const updatedFiles = [...files, ...newFiles];
+  setFiles(updatedFiles);
 
-  const newPreviews = newFiles.map(file => URL.createObjectURL(file))
-  setFilePreviews(prevPreviews => [...prevPreviews, ...newPreviews])
- }
+  const newPreviews = newFiles.map(file => URL.createObjectURL(file));
+  setFilePreviews(prevPreviews => [...prevPreviews, ...newPreviews]);
+ };
 
  const handleSubmit = async e => {
-  e.preventDefault()
-  const productData = {
-   ...productFormData,
-   ...files
-  }
+  e.preventDefault();
+
+  const formData = new FormData();
+
+  // Append other product details
+  Object.keys(productFormData).forEach(key => {
+   formData.append(key, productFormData[key]);
+  });
+
+  // Append files directly (should match the field name used in your backend)
+  files.forEach(file => {
+   formData.append('files', file); // Ensure 'files' matches the multer configuration
+  });
 
   try {
-   await dispatch(createProduct(productData)).unwrap()
+   await dispatch(createProduct(formData)).unwrap();
    toast({
     title: 'Product created.',
     description: 'Your product has been created successfully.',
     status: 'success',
     duration: 3000,
     isClosable: true
-   })
+   });
    setTimeout(() => {
-    router.push('/')
-   }, 3000)
+    router.push('/');
+   }, 3000);
   } catch (error) {
+   console.log(error);
    toast({
     title: 'Error creating product.',
     description: error.message,
     status: 'error',
     duration: 5000,
     isClosable: true
-   })
+   });
   }
- }
+ };
 
  useEffect(() => {
   return () => {
-   filePreviews.forEach(filePreview => URL.revokeObjectURL(filePreview))
-  }
- }, [filePreviews])
+   filePreviews.forEach(filePreview => URL.revokeObjectURL(filePreview));
+  };
+ }, [filePreviews]);
 
  return (
   <>
@@ -208,7 +217,7 @@ const CreateProductForm = () => {
     </Flex>
    </Box>
   </>
- )
-}
+ );
+};
 
-export default CreateProductForm
+export default CreateProductForm;
