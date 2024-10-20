@@ -1,7 +1,7 @@
-
 .nav-Link {
  display: flex;
  align-items: center;
+ text-transform: lowercase;
  border: 1px solid red;
  padding: 10px 14px 10px 14px;
  color: white;
@@ -29,6 +29,12 @@
  height: 100%;
  object-fit: cover;
  animation: zoom 5s infinite;
+}
+.telephone {
+ color: black;
+}
+.icons {
+ font-size: 32px;
 }
 
 @keyframes zoom {

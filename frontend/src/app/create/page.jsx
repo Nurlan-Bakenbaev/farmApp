@@ -24,6 +24,8 @@ import {
  Accordion,
  AccordionIcon
 } from '@chakra-ui/react';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -44,9 +46,8 @@ const CreateProductForm = () => {
   delivery: false,
   bio: false,
   userId: null,
-  userName: null
+  username: null
  });
- console.log(productFormData.userId);
  const {
   loading: productLoading,
   error: productError,
@@ -63,18 +64,27 @@ const CreateProductForm = () => {
    setFormData((prevFormData) => ({
     ...prevFormData,
     userId: user?.user?._id,
-    userName: user.user.name
+    username: user.user.name
    }));
   }
  }, [user]);
+
  const handleChange = (e) => {
-  const { name, value, type, checked } = e.target;
-  const newValue = type === 'checkbox' ? checked : value;
-  setFormData((prev) => ({
-   ...prev,
-   [name]: newValue
-  }));
+  if (e.target) {
+   const { name, value, type, checked } = e.target;
+   const newValue = type === 'checkbox' ? checked : value;
+   setFormData((prev) => ({
+    ...prev,
+    [name]: newValue
+   }));
+  } else {
+   setFormData((prev) => ({
+    ...prev,
+    telephone: e
+   }));
+  }
  };
+ console.log(productFormData.minOrder);
  const handleFilesChange = (e) => {
   const newFiles = Array.from(e.target.files);
   const updatedFiles = [...files, ...newFiles];
@@ -166,7 +176,7 @@ const CreateProductForm = () => {
        </FormControl>
        {/* Price */}
        <FormControl isRequired>
-        <FormLabel fontSize={11}>Price</FormLabel>
+        <FormLabel fontSize={11}>Price/kg/</FormLabel>
         <NumberInput min={1} step={0.01}>
          <NumberInputField
           name="price"
@@ -212,15 +222,13 @@ const CreateProductForm = () => {
 
        {/* Quantity */}
        <FormControl>
-        <FormLabel fontSize={11}>Quantity</FormLabel>
-        <NumberInput min={1}>
-         <NumberInputField
-          name="quantity"
-          placeholder="Quantity in stock"
-          value={productFormData.quantity}
-          onChange={handleChange}
-         />
-        </NumberInput>
+        <FormLabel fontSize="11px">Quantity/kg/tons</FormLabel>
+        <Input
+         name="quantity"
+         placeholder="Quantity in stock"
+         value={productFormData.quantity}
+         onChange={handleChange}
+        />
        </FormControl>
       </Stack>
       <Stack w="full" direction={{ base: 'column', md: 'row' }} spacing={4} alignItems="center">
@@ -236,29 +244,33 @@ const CreateProductForm = () => {
        </FormControl>
 
        {/* telephone */}
-       <FormControl>
-        <FormLabel fontSize={11}>Telephone</FormLabel>
-        <NumberInput min={6}>
-         <NumberInputField
-          name="telephone"
-          placeholder="Quantity in stock (kg,tonn)"
-          value={productFormData.telephone}
-          onChange={handleChange}
-         />
-        </NumberInput>
-       </FormControl>
+       <Box>
+        <FormLabel fontSize={11}>Telephone Number</FormLabel>
+        <PhoneInput
+         isRequired
+         className="telephone"
+         country={'kg'}
+         name="telephone"
+         value={productFormData.telephone}
+         onChange={handleChange}
+        />
+       </Box>
       </Stack>
       <Stack w="full" direction={{ base: 'column', md: 'row' }} spacing={4} alignItems="center">
        {/* Minimum Order */}
        <FormControl>
         <FormLabel fontSize={11}>Minimum Order</FormLabel>
-        <Input
+        <Select
          type="text"
          name="minOrder"
-         placeholder="Example 10 kg"
+         placeholder="Minimum Order"
          value={productFormData.minOrder}
          onChange={handleChange}
-        />
+        >
+         <option> 10 kg</option>
+         <option> 100 kg</option>
+         <option> Negotiable </option>
+        </Select>
        </FormControl>
        {/* Product Photo */}
        <FormControl>

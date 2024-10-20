@@ -7,9 +7,17 @@ const Loading = () => {
    flexDirection="column"
    justifyContent="center"
    alignItems="center"
+   minH="100vh" 
+   textAlign="center" 
   >
-   <Spinner size="lg" thickness="2px" speed="0.70s" color="blue.500" />
-   <Text mt={2} fontSize="lg" color="gray.700">
+   <Spinner
+    size="lg"
+    thickness="4px" 
+    speed="0.65s"
+    color="blue.500"
+    aria-label="Loading" 
+   />
+   <Text mt={4} fontSize="lg" fontWeight="medium" color="gray.700">
     Please wait...
    </Text>
   </Box>

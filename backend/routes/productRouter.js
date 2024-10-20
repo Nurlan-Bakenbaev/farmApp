@@ -13,15 +13,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const productRouter = express.Router();
 
-// Set up multer storage configuration
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads")); // Specify the directory to store the uploaded files
+    cb(null, path.join(__dirname, "../uploads")); 
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname)); // Generate a unique filename
+    cb(null, uniqueSuffix + path.extname(file.originalname)); 
   },
 });
 const upload = multer({ storage: storage });

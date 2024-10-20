@@ -1,11 +1,13 @@
 'use client';
 import React, { useEffect } from 'react';
-import CardComponent from './components/Card';
+import CardComponent from './components/Card.jsx';
 import { Box, Button, Flex, Heading, Image, Text, VStack } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts, resetProductState } from './redux/features/productSlice';
-import Loading from './components/Loading';
+
 import Link from 'next/link';
+import Loading from './components/Loading.jsx';
+
 const HomePage = () => {
  const { products, loading, success, error } = useSelector((state) => state.product);
  const dispatch = useDispatch();
@@ -15,14 +17,22 @@ const HomePage = () => {
    dispatch(resetProductState());
   };
  }, [dispatch]);
- console.log(products);
+
  if (loading) {
-  <Loading />;
-  return;
+  return <Loading />;
  }
+ 
  if (error) {
-  return <div>Error: {error}</div>;
+  return (
+   <Flex justify="center" align="center" h="100vh">
+    <Text fontSize="xl" fontWeight="bold" color="red.500">
+     Error: {error}
+    </Text>
+   </Flex>
+  );
  }
+
+ console.log(products);
  return (
   <Box>
    {products.length > 0 && (
@@ -32,20 +42,7 @@ const HomePage = () => {
    )}
    <Flex justifyContent="center" wrap={'wrap'} gap={3}>
     {products.length > 0 ? (
-     products?.map((data) => (
-      <CardComponent
-       userId={data.user}
-       key={data._id}
-       price={data.price}
-       userName={data.userName}
-       name={data.name}
-       cat={data.category}
-       quantity={data.quantity}
-       id={data._id}
-       minOrder={data.minOrder}
-       imageUrl={`http://localhost:8000/uploads/${data.image[0].split('/').pop()}`}
-      />
-     ))
+     products?.map((data) => <CardComponent productData={data} />)
     ) : (
      <Flex
       wrap={'wrap'}

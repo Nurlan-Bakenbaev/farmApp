@@ -13,7 +13,7 @@ const productsSchema = new mongoose.Schema(
     address: String,
     delivery: Boolean,
     bio: Boolean,
-    userName: String,
+    username: String,
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
