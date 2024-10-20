@@ -1,11 +1,12 @@
-import localFont from 'next/font/local';
+
 import './globals.css';
 import ReduxProvider from './components/ReduxWrapper';
 import { ChakraUIProviders } from './providers/ChakraProvider';
 import Navbar from './components/Navbar.jsx';
 import { Box, Text } from '@chakra-ui/react';
 import Footer from './components/Footer';
-
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 export const metadata = {
  title: 'Farmers Marketplace',
  description:
@@ -13,7 +14,7 @@ export const metadata = {
  openGraph: {
   title: 'Farmers Marketplace - Connect and Trade',
   description: 'A platform for farmers to showcase and sell their products directly to buyers.',
-  url: 'https://github.com/Nurlan-Bakenbaev', 
+  url: 'https://github.com/Nurlan-Bakenbaev',
   images: [
    {
     url: 'https://images.unsplash.com/photo-1471193945509-9ad0617afabf?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D ',
@@ -24,8 +25,7 @@ export const metadata = {
   ]
  },
  icons: {
-  icon:
-   'https://images.unsplash.com/photo-1466611653911-95081537e5b7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB '
+  icon: '/farmer.png'
  }
 };
 
@@ -36,7 +36,13 @@ export default function RootLayout({ children }) {
     <ReduxProvider>
      <ChakraUIProviders>
       <Navbar />
-      <Box px={'5%'} mx="auto" my={'20px'} minH={'80vh'} maxW={{ base: '100%', md: '90%', lg: '80%' }}>
+      <Box
+       px={'5%'}
+       mx="auto"
+       my={'20px'}
+       minH={'80vh'}
+       maxW={{ base: '100%', md: '90%', lg: '80%' }}
+      >
        {children}
       </Box>
       <Footer />

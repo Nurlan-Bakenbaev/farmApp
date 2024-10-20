@@ -16,7 +16,13 @@ import {
  Image,
  Flex,
  RadioGroup,
- Radio
+ Radio,
+ AccordionItem,
+ AccordionButton,
+ AccordionPanel,
+ Checkbox,
+ Accordion,
+ AccordionIcon
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -35,9 +41,12 @@ const CreateProductForm = () => {
   minOrder: '',
   telephone: '',
   address: '',
+  delivery: false,
+  bio: false,
   userId: null,
   userName: null
  });
+ console.log(productFormData.userId);
  const {
   loading: productLoading,
   error: productError,
@@ -48,18 +57,23 @@ const CreateProductForm = () => {
  const router = useRouter();
  const toast = useToast();
  const dispatch = useDispatch();
+
  useEffect(() => {
   if (user) {
    setFormData((prevFormData) => ({
     ...prevFormData,
-    userId: user.user._id,
+    userId: user?.user?._id,
     userName: user.user.name
    }));
   }
  }, [user]);
  const handleChange = (e) => {
-  const { name, value } = e.target;
-  setFormData((prev) => ({ ...prev, [name]: value }));
+  const { name, value, type, checked } = e.target;
+  const newValue = type === 'checkbox' ? checked : value;
+  setFormData((prev) => ({
+   ...prev,
+   [name]: newValue
+  }));
  };
  const handleFilesChange = (e) => {
   const newFiles = Array.from(e.target.files);
@@ -72,7 +86,24 @@ const CreateProductForm = () => {
 
  const handleSubmit = async (e) => {
   e.preventDefault();
-
+  if (!productFormData?.userId) {
+   toast({
+    title: 'Please Login',
+    description: (
+     <span>
+      You are not authorized to create a product. Please
+      <a href="/login" style={{ color: 'blue', textDecoration: 'underline' }}>
+       &nbsp; LOGIN &nbsp;
+      </a>
+      to continue.
+     </span>
+    ),
+    status: 'error',
+    duration: 6000,
+    isClosable: true
+   });
+   return;
+  }
   const formData = new FormData();
 
   Object.keys(productFormData).forEach((key) => {
@@ -136,7 +167,7 @@ const CreateProductForm = () => {
        {/* Price */}
        <FormControl isRequired>
         <FormLabel fontSize={11}>Price</FormLabel>
-        <NumberInput min={1}>
+        <NumberInput min={1} step={0.01}>
          <NumberInputField
           name="price"
           placeholder="Product price"
@@ -153,8 +184,13 @@ const CreateProductForm = () => {
         name="description"
         placeholder="Product description"
         value={productFormData.description}
+        rows={8}
+        maxLength={1000}
         onChange={handleChange}
        />
+       <Text color={'gray.500'} fontSize={12}>
+        {productFormData.description.length}/{1000}
+       </Text>
       </FormControl>
       <Stack w="full" direction={{ base: 'column', md: 'row' }} spacing={4} alignItems="center">
        {/* Category */}
@@ -189,7 +225,7 @@ const CreateProductForm = () => {
       </Stack>
       <Stack w="full" direction={{ base: 'column', md: 'row' }} spacing={4} alignItems="center">
        <FormControl>
-        <FormLabel fontSize={11}>Address</FormLabel>
+        <FormLabel fontSize={11}>Address (City,Street)</FormLabel>
         <Input
          type="text"
          name="address"
@@ -205,7 +241,7 @@ const CreateProductForm = () => {
         <NumberInput min={6}>
          <NumberInputField
           name="telephone"
-          placeholder="Quantity in stock"
+          placeholder="Quantity in stock (kg,tonn)"
           value={productFormData.telephone}
           onChange={handleChange}
          />
@@ -230,6 +266,35 @@ const CreateProductForm = () => {
         <Input type="file" name="photos" multiple accept="image/*" onChange={handleFilesChange} />
        </FormControl>
       </Stack>
+
+      {/* First Accordion: Product Details */}
+      <Accordion w={'100%'} allowMultiple>
+       <AccordionItem>
+        <h2>
+         <AccordionButton>
+          <Box as="span" flex="1" textAlign="left">
+           Additional Information
+          </Box>
+          <AccordionIcon />
+         </AccordionButton>
+        </h2>
+        <AccordionPanel pb={4}>
+         <VStack spacing={4}>
+          <FormControl display="flex" alignItems="center">
+           <Checkbox name="bio" isChecked={productFormData.bio} onChange={handleChange}>
+            Bio product
+           </Checkbox>
+          </FormControl>
+
+          <FormControl display="flex" alignItems="center">
+           <Checkbox name="delivery" isChecked={productFormData.delivery} onChange={handleChange}>
+            Can be Delivered
+           </Checkbox>
+          </FormControl>
+         </VStack>
+        </AccordionPanel>
+       </AccordionItem>
+      </Accordion>
       <Button
        type="submit"
        bgGradient="linear(to-r, teal.400, teal.500, teal.600)"

@@ -4,7 +4,17 @@ import Link from 'next/link';
 import { FcLikePlaceholder } from 'react-icons/fc';
 import { FcLike } from 'react-icons/fc';
 import { Badge } from '@chakra-ui/react';
-const CardComponent = ({ name, price, imageUrl, minOrder,userId, id, cat, quantity }) => {
+const CardComponent = ({
+ name,
+ price,
+ imageUrl,
+ minOrder,
+ userName,
+ userId,
+ id,
+ cat,
+ quantity
+}) => {
  const [liked, setLiked] = React.useState(false);
 
  const handleLikeClick = (e) => {
@@ -68,7 +78,7 @@ const CardComponent = ({ name, price, imageUrl, minOrder,userId, id, cat, quanti
       pt={'10px'}
      >
       <Link href={`/products-owner/${userId}`}>
-       <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+       <Avatar name={userName} src={'/farmer.png'} />
       </Link>
       <Link className="nav-Link" href={`/cat/${cat}`}>
        {cat}

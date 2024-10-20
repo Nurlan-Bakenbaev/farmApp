@@ -25,9 +25,11 @@ const HomePage = () => {
  }
  return (
   <Box>
-   <Text fontSize="2xl" mb={4}>
-    New Advertisements
-   </Text>
+   {products.length > 0 && (
+    <Text fontSize="2xl" mb={4}>
+     New Advertisements
+    </Text>
+   )}
    <Flex justifyContent="center" wrap={'wrap'} gap={3}>
     {products.length > 0 ? (
      products?.map((data) => (
@@ -35,6 +37,7 @@ const HomePage = () => {
        userId={data.user}
        key={data._id}
        price={data.price}
+       userName={data.userName}
        name={data.name}
        cat={data.category}
        quantity={data.quantity}

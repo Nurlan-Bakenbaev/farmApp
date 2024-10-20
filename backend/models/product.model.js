@@ -9,13 +9,12 @@ const productsSchema = new mongoose.Schema(
     category: String,
     quantity: String,
     minOrder: String,
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    userName: String,
     telephone: Number,
     address: String,
-    city: String,
-    state: String,
-    delivery: String,
+    delivery: Boolean,
+    bio: Boolean,
+    userName: String,
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   },
   { timestamps: true }
 );
