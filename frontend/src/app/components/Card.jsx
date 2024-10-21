@@ -151,11 +151,7 @@ const CardComponent = ({ productData }) => {
       left={0}
       width="100%"
       height="100%"
-      src={
-       image?.length > 0
-        ? `http://localhost:8000/uploads/${image[0].split('/').pop()}`
-        : '/farmer.png'
-      }
+      src={image ? `http://localhost:8000/uploads/${image[0].split('/').pop()}` : 'noimage.png'}
       alt={name}
       fallbackSrc="/default-image.jpg"
       objectFit="cover"

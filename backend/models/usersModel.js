@@ -22,6 +22,7 @@ const userSchema = mongoose.Schema(
     userchecked: { type: Boolean, default: false },
     photo: String,
     products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
+    liked: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
   },
   { timestamps: true }
 );
