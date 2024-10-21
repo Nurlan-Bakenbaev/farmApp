@@ -2,7 +2,12 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 
-import { signUp, signIn, signOut } from "../controllers/userControllers.js";
+import {
+  signUp,
+  signIn,
+  signOut,
+  getUserById,
+} from "../controllers/userControllers.js";
 const userRouter = express.Router();
 
 // Define storage options for multer
@@ -26,4 +31,5 @@ export const upload = multer({ storage, fileFilter });
 userRouter.route("/signup").post(upload.single("photo"), signUp);
 userRouter.route("/signin").post(signIn);
 userRouter.route("/logout").post(signOut);
+userRouter.get("/owner/:id", getUserById);
 export default userRouter;

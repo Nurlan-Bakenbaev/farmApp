@@ -9,8 +9,6 @@ import {
  Avatar,
  Badge,
  IconButton,
- Tag,
- Tooltip,
  HStack,
  VStack,
  useDisclosure,
@@ -31,10 +29,10 @@ import {
  MdProductionQuantityLimits,
  MdOutlineDelete
 } from 'react-icons/md';
-import Link from 'next/link';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteProduct } from '../redux/features/productSlice';
 import ModalWindow from './ModalWindow';
+import { Link } from '@chakra-ui/react';
 const CardComponent = ({ productData }) => {
  const [liked, setLiked] = React.useState(false);
  const { isOpen, onOpen, onClose } = useDisclosure();
@@ -54,14 +52,18 @@ const CardComponent = ({ productData }) => {
   address,
   createdAt
  } = productData;
+
  const dispatch = useDispatch();
  const toast = useToast();
+ const { user } = useSelector((state) => state.user);
+ console.log(user.user._id === productData.user);
+ console.log('this is product', productData);
  const handleDelete = async (_id) => {
   try {
    const result = await dispatch(deleteProduct(_id)).unwrap();
    toast({
     title: 'Product Deleted.',
-    description: `Product ${productData.name} has been successfully deleted.`,
+    description: `Product ${productData.name} deleted.`,
     status: 'success',
     duration: 3000,
     isClosable: true
@@ -81,52 +83,72 @@ const CardComponent = ({ productData }) => {
   e.stopPropagation();
   setLiked(!liked);
  };
-
+ if (!productData) {
+  return <Loading />;
+ }
  return (
   <Box
-   maxW="xs"
-   borderWidth="1px"
+   maxW="240px"
+   maxHeight="460px"
    borderRadius="lg"
    overflow="hidden"
-   boxShadow="lg"
-   transition="transform 0.7s"
+   boxShadow="2xl"
+   transition="transform 0.5s"
    _hover={{ transform: 'scale(1.01)' }}
   >
-   <Box position="relative">
-    {bio && (
-     <Badge
-      title="This Product is a Bio product"
+   <Box background={'black'}>
+    <Box h="160px" position="relative" overflow="hidden">
+     {bio && (
+      <Badge
+       zIndex={20}
+       title="This Product is a Bio product"
+       position="absolute"
+       bottom="15px"
+       left="10px"
+       fontSize="0.8em"
+       colorScheme="green"
+      >
+       BIO
+      </Badge>
+     )}
+     {user.user._id === productData.user && (
+      <IconButton
+       zIndex={20}
+       icon={
+        <MdOutlineDelete
+         onClick={(e) => {
+          e.stopPropagation();
+          onOpen();
+         }}
+         className="icons"
+        />
+       }
+       position="absolute"
+       top="10px"
+       left="10px"
+       isRound
+      />
+     )}
+
+     <IconButton
+      zIndex={20}
+      aria-label="Like button"
+      icon={liked ? <FcLike className="icons" /> : <FcLikePlaceholder className="icons" />}
       position="absolute"
-      bottom="15px"
-      left="10px"
-      ml="1"
-      fontSize="0.8em"
-      colorScheme="green"
-     >
-      BIO
-     </Badge>
-    )}
-
-    <IconButton
-     aria-label="Like button"
-     icon={liked ? <FcLike className="icons" /> : <FcLikePlaceholder className="icons" />}
-     position="absolute"
-     top="10px"
-     right="10px"
-     onClick={handleLikeClick}
-     isRound
-    />
-    <IconButton
-     icon={<MdOutlineDelete onClick={onOpen} className="icons" />}
-     position="absolute"
-     top="10px"
-     left="10px"
-     isRound
-    />
-
-    <Link href={`/single-product/${_id}`}>
+      top="10px"
+      right="10px"
+      onClick={handleLikeClick}
+      isRound
+     />
      <Image
+      zIndex={10}
+      _hover={{ opacity: '0.7' }}
+      borderWidth="1px"
+      boxShadow="lg"
       borderRadius="8px"
+      position="absolute"
+      top={0}
+      left={0}
       width="100%"
       height="100%"
       src={
@@ -138,80 +160,89 @@ const CardComponent = ({ productData }) => {
       fallbackSrc="/default-image.jpg"
       objectFit="cover"
      />
-    </Link>
+    </Box>
    </Box>
-
-   <Box p="4">
-    <Stack spacing={3}>
-     <Text borderBottom="1px solid gray" pb={2} textAlign="center" fontWeight="bold" fontSize="2xl">
+   <Box p="3">
+    <Stack spacing={2}>
+     <Text borderBottom="1px solid gray" pb={1} textAlign="center" fontWeight="bold" fontSize="md">
       {name}
      </Text>
 
-     <Flex justifyContent="center" gap={2}>
+     <Flex justifyContent="space-between" alignItems="center">
       <HStack>
        <MdAttachMoney className="icons" color="green" />
-       <Text fontSize="md" fontWeight="bold">
-        Price:{price} kg
+       <Text fontSize="sm" fontWeight="bold">
+        {price} kg
        </Text>
       </HStack>
       <HStack>
        <MdProductionQuantityLimits className="icons" color="orange" />
-       <Text fontSize="md" fontWeight="bold">
-        Min order: {minOrder || 'N/A'}
+       <Text fontSize="sm" fontWeight="bold">
+        {minOrder || 'N/A'}
        </Text>
       </HStack>
      </Flex>
 
-     <Flex justifyContent="space-between" borderTop="1px solid gray" pt={2}>
-      <HStack>
-       <MdCategory className="icons" color="purple" />
-       <Link href={`/cat/${category}`}>
-        <Text fontWeight="bold" color="purple">
-         {category || 'Not Selected'}
-        </Text>
-       </Link>
-      </HStack>
+     <Flex wrap={'wrap'} gap={2} justifyContent="space-between" alignItems="center">
+      <MdCategory className="icons" color="purple" />
+      <Link href={`/cat/${category}`}>
+       <Text fontSize="sm" fontWeight="bold" color="purple" noOfLines={1}>
+        {category || 'Not Selected'}
+       </Text>
+      </Link>
       <HStack>
        <FaWarehouse className="icons" color="blue" />
-       <Text>{`In stock: ${quantity || 'N/A'}`}</Text>
+       <Text fontSize="sm">{`In stock: ${quantity || 'N/A'}`}</Text>
       </HStack>
      </Flex>
-
-     <HStack justify="center" spacing={4}>
+     <HStack justify="center" spacing={2}>
       {bio && <FaLeaf color="green" className="icons" title="BIO" />}
       {delivery && <FaTruck color="green" className="icons" title="Delivery" />}
      </HStack>
 
-     <VStack align="start" spacing={2}>
+     <VStack align="start" spacing={1}>
       <HStack>
        <FaMapMarkerAlt color="red" />
-       <Text>{address || 'No address provided'}</Text>
+       <Text fontSize="xs">{address || 'No address provided'}</Text>
       </HStack>
       <HStack>
        <FaCalendarAlt className="icons" color="gray" />
-       <Text>{`${new Date(createdAt).toLocaleDateString()}`}</Text>
+       <Text fontSize="xs">{`${new Date(createdAt).toLocaleDateString()}`}</Text>
       </HStack>
      </VStack>
 
      <Link href={`/products-owner/${userId}`}>
-      <Flex alignItems="center" gap={3}>
+      <Flex alignItems="center" gap={2}>
        <HStack>
         <FaPhone />
-        <Text>{telephone || 'No Phone Available'}</Text>
+        <Text fontSize="xs">{telephone || 'No Phone Available'}</Text>
        </HStack>
-       <Avatar name={username || 'Anonymous'} title={username} />
-       <Text borderBottom="1px solid gray">{username || 'Anonymous'}</Text>
+       <Avatar name={username || 'Anonymous'} title={username} size="xs" />
+       <Text fontSize="xs" borderBottom="1px solid gray">
+        {username || 'Anonymous'}
+       </Text>
       </Flex>
      </Link>
-     <ModalWindow
-      isOpen={isOpen}
-      onClose={onClose}
-      id={_id}
-      handleDelete={handleDelete}
-      itemName={name}
-     />
     </Stack>
+    <Box mt={1} p={2} textAlign={'right'}>
+     <Link
+      color="blue.500"
+      textDecoration="underline"
+      fontSize={'16px'}
+      href={`/single-product/${_id}`}
+      _hover={{ textDecoration: 'none', color: 'blue.500' }}
+     >
+      Read more
+     </Link>
+    </Box>
    </Box>
+   <ModalWindow
+    isOpen={isOpen}
+    onClose={onClose}
+    id={_id}
+    handleDelete={handleDelete}
+    itemName={name}
+   />
   </Box>
  );
 };

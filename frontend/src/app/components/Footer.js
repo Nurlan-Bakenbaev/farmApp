@@ -3,7 +3,7 @@ import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa';
 
 export default function Footer() {
  return (
-  <Box>
+  <Box boxShadow="0px -4px 10px rgba(0, 0, 0, 0.2)">
    <Container as={Stack} maxW={'4xl'} py={5} justify={'center'} align={'center'}>
     <Stack direction={'row'} spacing={2}>
      <Link href={'/about'}>About Us</Link>

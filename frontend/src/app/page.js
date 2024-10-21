@@ -21,7 +21,7 @@ const HomePage = () => {
  if (loading) {
   return <Loading />;
  }
- 
+ console.log(loading);
  if (error) {
   return (
    <Flex justify="center" align="center" h="100vh">
@@ -32,7 +32,6 @@ const HomePage = () => {
   );
  }
 
- console.log(products);
  return (
   <Box>
    {products.length > 0 && (
