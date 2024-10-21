@@ -13,7 +13,7 @@ import {
  InputGroup,
  InputLeftElement
 } from '@chakra-ui/react';
-import { AtSignIcon, LockIcon } from '@chakra-ui/icons'; // Importing the icons
+import { AtSignIcon, LockIcon } from '@chakra-ui/icons';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser } from '../redux/features/userSlice';
@@ -32,7 +32,7 @@ const Login = () => {
  useEffect(() => {
   if (user) {
    toast({
-    title: 'Welcome back!',
+    title: 'Welcome!',
     description: `You have successfully logged in.`,
     status: 'success',
     duration: 3000,
@@ -40,7 +40,6 @@ const Login = () => {
    });
    router.push('/');
   }
-  console.log(user);
  }, [user, router, toast]);
 
  const handleKeyDown = (e) => {

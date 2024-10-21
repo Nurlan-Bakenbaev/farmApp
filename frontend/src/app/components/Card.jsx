@@ -33,6 +33,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { deleteProduct } from '../redux/features/productSlice';
 import ModalWindow from './ModalWindow';
 import { Link } from '@chakra-ui/react';
+import Loading from './Loading';
 const CardComponent = ({ productData }) => {
  const [liked, setLiked] = React.useState(false);
  const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,17 +48,16 @@ const CardComponent = ({ productData }) => {
   bio,
   telephone,
   name,
-  image,
+  images,
   delivery,
   address,
   createdAt
  } = productData;
+ console.log(images);
 
  const dispatch = useDispatch();
  const toast = useToast();
  const { user } = useSelector((state) => state.user);
- console.log(user.user._id === productData.user);
- console.log('this is product', productData);
  const handleDelete = async (_id) => {
   try {
    const result = await dispatch(deleteProduct(_id)).unwrap();
@@ -111,7 +111,7 @@ const CardComponent = ({ productData }) => {
        BIO
       </Badge>
      )}
-     {user.user._id === productData.user && (
+     {user?.user._id === productData.user && (
       <IconButton
        zIndex={20}
        icon={
@@ -140,22 +140,24 @@ const CardComponent = ({ productData }) => {
       onClick={handleLikeClick}
       isRound
      />
-     <Image
-      zIndex={10}
-      _hover={{ opacity: '0.7' }}
-      borderWidth="1px"
-      boxShadow="lg"
-      borderRadius="8px"
-      position="absolute"
-      top={0}
-      left={0}
-      width="100%"
-      height="100%"
-      src={image ? `http://localhost:8000/uploads/${image[0].split('/').pop()}` : 'noimage.png'}
-      alt={name}
-      fallbackSrc="/default-image.jpg"
-      objectFit="cover"
-     />
+     <Link href={`/single-product/${_id}`}>
+      <Image
+       zIndex={10}
+       _hover={{ opacity: '0.7' }}
+       borderWidth="1px"
+       boxShadow="lg"
+       borderRadius="8px"
+       position="absolute"
+       top={0}
+       left={0}
+       width="100%"
+       height="100%"
+       src={images ? `http://localhost:8000/uploads/${images[0].split('/').pop()}` : <Loading />}
+       alt={name}
+       fallbackSrc="/default-image.jpg"
+       objectFit="cover"
+      />
+     </Link>
     </Box>
    </Box>
    <Box p="3">

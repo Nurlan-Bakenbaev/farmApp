@@ -7,6 +7,7 @@ import {
   signIn,
   signOut,
   getUserById,
+  toggleLikeProduct,
 } from "../controllers/userControllers.js";
 const userRouter = express.Router();
 
@@ -32,4 +33,5 @@ userRouter.route("/signup").post(upload.single("photo"), signUp);
 userRouter.route("/signin").post(signIn);
 userRouter.route("/logout").post(signOut);
 userRouter.get("/owner/:id", getUserById);
+userRouter.put("/:userId/like/:productId", toggleLikeProduct);
 export default userRouter;

@@ -127,3 +127,35 @@ export const getUserById = async (req, res) => {
     });
   }
 };
+//User Like unLike Product
+export const toggleLikeProduct = async (userId, productId) => {
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const hasLiked = user.liked.includes(productId);
+
+    let updatedUser;
+
+    if (hasLiked) {
+      updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $pull: { liked: productId } },
+        { new: true }
+      ).populate("liked");
+    } else {
+      updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $addToSet: { liked: productId } },
+        { new: true }
+      ).populate("liked");
+    }
+    return updatedUser;
+  } catch (error) {
+    console.error(error.message);
+    res.status(404).json(error.message);
+  }
+};

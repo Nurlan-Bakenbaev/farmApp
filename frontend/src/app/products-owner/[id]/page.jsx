@@ -36,11 +36,13 @@ const ProductOwnerPage = () => {
     <Flex align="center" justify="center" direction="column">
      {user.photo && (
       <Image
-       borderRadius="full"
-       boxSize="150px"
+       borderRadius="md"
+       objectFit="cover"
+       maxW="250px"
+       maxH="250px"
+       mb={4}
        src={`http://localhost:8000/uploads/${user.photo.split('/').pop()}`}
        alt={user.name}
-       mb={4}
       />
      )}
      <Text fontSize="2xl">{user.name}</Text>
