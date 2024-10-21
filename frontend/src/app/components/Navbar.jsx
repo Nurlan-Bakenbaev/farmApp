@@ -47,7 +47,7 @@ const Navbar = () => {
      fontSize={{ base: '28px', md: '36px' }}
      fontWeight="extrabold"
     >
-     <Link href={'/'}>Anzeigen</Link>
+     <Link href={'/'}>ECO-Farm</Link>
     </Box>
 
     {/* Search Bar */}
@@ -106,7 +106,7 @@ const Navbar = () => {
         fontSize={{ base: '28px', md: '36px' }}
         fontWeight="extrabold"
        >
-        <Link href={'/'}>Anzeigen</Link>
+        <Link href={'/'}>ECO-Farm</Link>
        </Text>
       </MenuList>
      </Menu>

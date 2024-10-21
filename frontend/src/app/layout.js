@@ -1,12 +1,11 @@
-
 import './globals.css';
 import ReduxProvider from './components/ReduxWrapper';
 import { ChakraUIProviders } from './providers/ChakraProvider';
 import Navbar from './components/Navbar.jsx';
 import { Box, Text } from '@chakra-ui/react';
-import Footer from './components/Footer';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import Footer from './components/Footer.jsx';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 export const metadata = {
  title: 'Farmers Marketplace',
  description:
