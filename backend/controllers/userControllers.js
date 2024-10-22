@@ -45,27 +45,25 @@ export const signIn = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const existingUser = await User.findOne({ email }).select("+password");
-    if (!existingUser) {
+    const user = await User.findOne({ email }).select("+password");
+    if (!user) {
       return res
         .status(404)
         .json({ success: false, message: "User not found" });
     }
-
     // Validate password
-    const isMatch = await doHashValidate(password, existingUser.password);
+    const isMatch = await doHashValidate(password, user.password);
     if (!isMatch) {
       return res
         .status(401)
         .json({ success: false, message: "Invalid credentials" });
     }
-
     // Create a token
     const token = jwt.sign(
       {
-        userId: existingUser.id,
-        email: existingUser.email,
-        verified: existingUser.verified,
+        userId: user.id,
+        email: user.email,
+        verified: user.verified,
       },
       "Application-TEST-TOKEN",
       { expiresIn: "8h" }
@@ -81,11 +79,7 @@ export const signIn = async (req, res) => {
       .status(200)
       .json({
         success: true,
-        user: {
-          name: existingUser.name,
-          email: existingUser.email,
-          userId: existingUser.id,
-        },
+        user,
         token: token,
         message: "Logged in successfully",
       });
@@ -128,34 +122,33 @@ export const getUserById = async (req, res) => {
   }
 };
 //User Like unLike Product
-export const toggleLikeProduct = async (userId, productId) => {
+export const toggleLikeProduct = async (req, res) => {
+  const { userId, productId } = req.params;
   try {
     const user = await User.findById(userId);
-
     if (!user) {
-      throw new Error("User not found");
+      return res.status(404).json({ message: "User not found" });
     }
-
-    const hasLiked = user.liked.includes(productId);
+    const hasLiked = user.likedProducts.includes(productId);
 
     let updatedUser;
 
     if (hasLiked) {
       updatedUser = await User.findByIdAndUpdate(
         userId,
-        { $pull: { liked: productId } },
+        { $pull: { likedProducts: productId } },
         { new: true }
-      ).populate("liked");
+      ).populate("likedProducts");
     } else {
       updatedUser = await User.findByIdAndUpdate(
         userId,
-        { $addToSet: { liked: productId } },
+        { $addToSet: { likedProducts: productId } },
         { new: true }
-      ).populate("liked");
+      ).populate("likedProducts");
     }
-    return updatedUser;
+    return res.status(200).json(updatedUser);
   } catch (error) {
     console.error(error.message);
-    res.status(404).json(error.message);
+    return res.status(500).json({ message: error.message });
   }
 };

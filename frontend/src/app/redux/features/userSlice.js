@@ -5,9 +5,7 @@ import axios from 'axios';
 export const postUser = createAsyncThunk('user/postUser', async (formData, { rejectWithValue }) => {
  try {
   const res = await axios.post('http://localhost:8000/user/signup', formData, {
-   headers: {
-    'Content-Type': 'multipart/form-data'
-   }
+   headers: { 'Content-Type': 'multipart/form-data' }
   });
   return res.data;
  } catch (error) {
@@ -21,12 +19,31 @@ export const loginUser = createAsyncThunk('user/login', async (userData, { rejec
   const res = await axios.post('http://localhost:8000/user/signin', userData, {
    withCredentials: true
   });
-
   return res.data;
  } catch (error) {
   return rejectWithValue(error.response.data);
  }
 });
+
+// Thunk for Liking/Unliking a Product
+export const likeProduct = createAsyncThunk(
+ 'user/likeProduct',
+ async ({ userId, productId }, { rejectWithValue }) => {
+  try {
+   const res = await axios.patch(
+    `http://localhost:8000/user/${userId}/like/${productId}`,
+    {},
+    {
+     headers: { 'Content-Type': 'application/json' },
+     withCredentials: true
+    }
+   );
+   return res.data; // The updated user is returned from the backend
+  } catch (error) {
+   return rejectWithValue(error.response.data);
+  }
+ }
+);
 
 const userSlice = createSlice({
  name: 'user',
@@ -62,8 +79,7 @@ const userSlice = createSlice({
     state.error = action.payload;
    });
 
-  //LOGIN
-
+  // LOGIN
   builder
    .addCase(loginUser.pending, (state) => {
     state.loading = true;
@@ -78,6 +94,28 @@ const userSlice = createSlice({
    .addCase(loginUser.rejected, (state, action) => {
     state.loading = false;
     state.error = action.payload || 'Failed to log in';
+   });
+
+  // LIKE/UNLIKE PRODUCT
+  builder
+   .addCase(likeProduct.pending, (state) => {
+    state.loading = true;
+    state.error = null;
+   })
+   .addCase(likeProduct.fulfilled, (state, action) => {
+    state.loading = false;
+
+    // Update user state with the new user data returned from the backend
+    state.user = action.payload; // The payload is the updated user object
+
+    state.error = null;
+
+    // Update local storage with the new user state if needed
+    localStorage.setItem('user', JSON.stringify(state.user));
+   })
+   .addCase(likeProduct.rejected, (state, action) => {
+    state.loading = false;
+    state.error = action.payload || 'Failed to update like status';
    });
  }
 });

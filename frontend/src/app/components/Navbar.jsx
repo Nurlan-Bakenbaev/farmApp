@@ -24,11 +24,12 @@ import User from './User';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserFromStorage } from '../redux/features/userSlice';
 import { RxHamburgerMenu } from 'react-icons/rx';
+import SearchInput from './SearchInput';
 const Navbar = () => {
  const { colorMode, toggleColorMode } = useColorMode();
  const dispatch = useDispatch();
  const { user, loading, error } = useSelector((state) => state.user);
-
+console.log(user)
  useEffect(() => {
   const storedUser = localStorage.getItem('user');
   if (storedUser) {
@@ -44,19 +45,14 @@ const Navbar = () => {
      display={{ base: 'none', md: 'block' }}
      bgGradient="linear(to-r, green.500, green.700)"
      bgClip="text"
-     fontSize={{ base: '28px', md: '36px' }}
+     fontSize={{ base: '22px', md: '28px' }}
      fontWeight="extrabold"
     >
-     <Link href={'/'}>ECO-Farm</Link>
+     <Link href={'/'}>ECO-FARM</Link>
     </Box>
 
     {/* Search Bar */}
-    <Stack display={'flex'} flexDirection={'row'} alignItems={'center'}>
-     <Input placeholder="Search..." />
-     <Button backgroundColor={'green.600'}>
-      <CiSearch size={30} />
-     </Button>
-    </Stack>
+   <SearchInput/>
 
     {/* Buttons and User Menu */}
     <Box display={{ base: 'none', md: 'flex' }} alignItems={'center'} gap={3}>
@@ -106,7 +102,7 @@ const Navbar = () => {
         fontSize={{ base: '28px', md: '36px' }}
         fontWeight="extrabold"
        >
-        <Link href={'/'}>ECO-Farm</Link>
+        <Link href={'/'}>ECO-FARM</Link>
        </Text>
       </MenuList>
      </Menu>

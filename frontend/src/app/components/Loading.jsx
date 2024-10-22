@@ -17,7 +17,7 @@ const Loading = () => {
     color="blue.500"
     aria-label="Loading" 
    />
-   <Text mt={4} fontSize="lg" fontWeight="medium" color="gray.700">
+   <Text mt={4} fontSize="lg" fontWeight="medium" color="blue.500">
     Please wait...
    </Text>
   </Box>

@@ -48,7 +48,7 @@ export const getOneProduct = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const singleProduct = await Product.findById(id);
+    const singleProduct = await Product.findById(id).populate("user");
     if (!singleProduct) {
       return res
         .status(404)
@@ -67,7 +67,7 @@ export const getAllProducts = async (req, res) => {
     const products = await Product.find();
     return res.json({ success: true, quantity: products.length, products });
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.error(error);
     return res.status(500).json({ success: false, error: error.message });
   }
 };
@@ -89,9 +89,9 @@ export const deleteProduct = async (req, res) => {
     }
 
     // Delete associated images
-    if (product.image && product.image.length > 0) {
+    if (product.images && product.images.length > 0) {
       await Promise.all(
-        product.image.map(async (imagePath) => {
+        product.images.map(async (imagePath) => {
           const fullImagePath = path.isAbsolute(imagePath)
             ? imagePath
             : path.join(__dirname, "..", imagePath);
@@ -100,7 +100,6 @@ export const deleteProduct = async (req, res) => {
             await fs.unlink(fullImagePath);
           } catch (err) {
             console.error("Error deleting image:", err);
-            // Optionally log or handle errors if needed
           }
         })
       );
@@ -131,7 +130,7 @@ export const updateProduct = async (req, res) => {
     const updatedProduct = await Product.findByIdAndUpdate(
       id,
       { name, price, img },
-      { new: true, runValidators: true } // Ensure valid data
+      { new: true, runValidators: true }
     );
 
     if (!updatedProduct) {
@@ -148,5 +147,27 @@ export const updateProduct = async (req, res) => {
   } catch (error) {
     console.error("Error updating product:", error);
     return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Find by  search query
+export const searchProducts = async (req, res) => {
+  const { searchTerm } = req.query;
+  try {
+    const products = await Product.find({
+      name: { $regex: searchTerm, $options: "i" },
+    });
+
+    if (!products.length) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No products found" });
+    }
+    return res
+      .status(200)
+      .json({ success: true, quantity: products.length, products });
+  } catch (error) {
+    console.error("Error searching products:", error);
+    return res.status(500).json({ success: false, error: error.message });
   }
 };

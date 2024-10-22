@@ -18,15 +18,14 @@ const HomePage = () => {
   };
  }, [dispatch]);
 
- if (loading) {
+ if (loading && navigator.onLine) {
   return <Loading />;
  }
- console.log(loading);
  if (error) {
   return (
    <Flex justify="center" align="center" h="100vh">
     <Text fontSize="xl" fontWeight="bold" color="red.500">
-     Error: {error}
+     Error: {typeof error === 'object' ? JSON.stringify(error) : error}
     </Text>
    </Flex>
   );
@@ -41,7 +40,7 @@ const HomePage = () => {
    )}
    <Flex justifyContent="center" wrap={'wrap'} gap={3}>
     {products.length > 0 ? (
-     products?.map((data) => <CardComponent productData={data} />)
+     products?.map((data, idx) => <CardComponent key={idx} productData={data} />)
     ) : (
      <Flex
       wrap={'wrap'}

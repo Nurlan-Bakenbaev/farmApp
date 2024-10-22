@@ -21,7 +21,7 @@ const User = ({ user }) => {
      <Avatar
       title={user?.name}
       size="md"
-      src={`http://localhost:8000/uploads/${user?.photo?.split('/').pop()}` || <MdAccountCircle />}
+      src={`http://localhost:8000/uploads/${user.photo?.split('/').pop()}` || <MdAccountCircle />}
      />
     </WrapItem>
    </Wrap>

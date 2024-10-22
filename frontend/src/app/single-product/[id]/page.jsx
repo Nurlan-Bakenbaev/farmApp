@@ -11,31 +11,32 @@ import {
  HStack,
  IconButton,
  Divider,
- Icon
+ Icon,
+ Avatar
 } from '@chakra-ui/react';
 import { MdAttachMoney, MdOutlineCategory, MdLocationOn, MdPhone } from 'react-icons/md';
 import { FaWeightHanging } from 'react-icons/fa';
 import { BiPackage } from 'react-icons/bi';
-import Slider from 'react-slick'; // Importing the react-slick slider
+import Slider from 'react-slick';
 import { IoIosArrowDropleft, IoIosArrowDropright } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'next/navigation';
 import { useEffect } from 'react';
 import Loading from '@/app/components/Loading';
 import { getOneProduct } from '@/app/redux/features/productSlice';
+import Link from 'next/link';
 
 const SingleProductPage = () => {
  const dispatch = useDispatch();
  const { singleProduct: product, loading, error } = useSelector((state) => state.product);
  const { id: productId } = useParams();
-
+ console.log(product);
  useEffect(() => {
   if (productId) {
    dispatch(getOneProduct(productId));
   }
  }, [dispatch, productId]);
 
- // Custom arrows for the slider
  const NextArrow = (props) => {
   const { onClick } = props;
   return (
@@ -68,7 +69,6 @@ const SingleProductPage = () => {
   );
  };
 
- // Slider settings
  const settings = {
   infinite: true,
   speed: 500,
@@ -110,10 +110,15 @@ const SingleProductPage = () => {
      </Slider>
     </Box>
    )}
-
+   <Link href={`/products-owner/${product.user._id}`}>
+    <Flex alignItems="center" gap={2}>
+     <Avatar name={product.user.name || 'Anonymous'} size="sm" />
+     <Text fontSize="sm">{product.user.name || 'Anonymous'}</Text>
+    </Flex>
+   </Link>
    <Divider my="10px" />
 
-   <VStack spacing={6} p={4} boxShadow={"xl"} align="stretch" w="full">
+   <VStack spacing={6} p={4} boxShadow={'xl'} align="stretch" w="full">
     <Flex justify="space-between" align="center">
      <HStack>
       <Icon as={MdOutlineCategory} boxSize={5} color="teal.500" />
@@ -124,7 +129,7 @@ const SingleProductPage = () => {
      <HStack>
       <Icon as={MdAttachMoney} boxSize={5} color="blue.500" />
       <Text fontSize="lg" fontWeight="semibold">
-       ${product.price}
+       {product.price}
       </Text>
      </HStack>
     </Flex>

@@ -38,7 +38,7 @@ app.use("/api", productRouter);
 connectionDB(process.env.MONGO_DB_URL)
   .then(() => {
     app.listen(process.env.PORT, () => {
-      console.log(`Server is running on http://localhost:${process.env.PORT}`);
+      console.log(`Server is running on ${process.env.PORT}`);
     });
   })
   .catch((err) => {

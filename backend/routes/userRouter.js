@@ -33,5 +33,5 @@ userRouter.route("/signup").post(upload.single("photo"), signUp);
 userRouter.route("/signin").post(signIn);
 userRouter.route("/logout").post(signOut);
 userRouter.get("/owner/:id", getUserById);
-userRouter.put("/:userId/like/:productId", toggleLikeProduct);
+userRouter.patch("/:userId/like/:productId", toggleLikeProduct);
 export default userRouter;
