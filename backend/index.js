@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://farm-app-xwlt.vercel.app/?vercelToolbarCode=vci-33McVatulrt",
+  "",
 ];
 
 app.use(

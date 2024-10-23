@@ -65,7 +65,7 @@ export const signIn = async (req, res) => {
         email: user.email,
         verified: user.verified,
       },
-      "Application-TEST-TOKEN",
+      process.env.JWT_SECRET,
       { expiresIn: "8h" }
     );
 
