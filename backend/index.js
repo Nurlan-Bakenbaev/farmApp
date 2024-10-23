@@ -13,10 +13,21 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 dotenv.config();
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://farm-app-xwlt.vercel.app/?vercelToolbarCode=vci-33McVatulrt",
+];
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.indexOf(origin) === -1) {
+        return callback(new Error("Not allowed by CORS"));
+      }
+      return callback(null, true);
+    },
     credentials: true,
   })
 );
@@ -29,10 +40,9 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from the uploads directory
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Set up user and product routes
+
 app.use("/user", userRouter);
 app.use("/api", productRouter);
-
 
 // Connect to MongoDB and start the server
 connectionDB(process.env.MONGO_DB_URL)

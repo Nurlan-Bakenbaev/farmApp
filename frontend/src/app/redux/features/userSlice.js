@@ -1,11 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+// Define your base URL for the API
+const API_BASE_URL = 'https://farm-7067dausg-kyrgyztruthgmailcoms-projects.vercel.app';
+
 // Thunk for Sign Up
 export const postUser = createAsyncThunk('user/postUser', async (formData, { rejectWithValue }) => {
  try {
-  const res = await axios.post('http://localhost:8000/user/signup', formData, {
-   headers: { 'Content-Type': 'multipart/form-data' }
+  const res = await axios.post(`${API_BASE_URL}/user/signup`, formData, {
+   headers: { 'Content-Type': 'multipart/form-data' },
+   withCredentials: true
   });
   return res.data;
  } catch (error) {
@@ -16,7 +20,7 @@ export const postUser = createAsyncThunk('user/postUser', async (formData, { rej
 // Thunk for Login
 export const loginUser = createAsyncThunk('user/login', async (userData, { rejectWithValue }) => {
  try {
-  const res = await axios.post('http://localhost:8000/user/signin', userData, {
+  const res = await axios.post(`${API_BASE_URL}/user/signin`, userData, {
    withCredentials: true
   });
   return res.data;
@@ -31,14 +35,14 @@ export const likeProduct = createAsyncThunk(
  async ({ userId, productId }, { rejectWithValue }) => {
   try {
    const res = await axios.patch(
-    `http://localhost:8000/user/${userId}/like/${productId}`,
+    `${API_BASE_URL}/user/${userId}/like/${productId}`,
     {},
     {
      headers: { 'Content-Type': 'application/json' },
      withCredentials: true
     }
    );
-   return res.data; // The updated user is returned from the backend
+   return res.data;
   } catch (error) {
    return rejectWithValue(error.response.data);
   }
@@ -105,12 +109,10 @@ const userSlice = createSlice({
    .addCase(likeProduct.fulfilled, (state, action) => {
     state.loading = false;
 
-    // Update user state with the new user data returned from the backend
-    state.user = action.payload; // The payload is the updated user object
+    state.user = action.payload;
 
     state.error = null;
 
-    // Update local storage with the new user state if needed
     localStorage.setItem('user', JSON.stringify(state.user));
    })
    .addCase(likeProduct.rejected, (state, action) => {

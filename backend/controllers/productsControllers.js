@@ -156,6 +156,7 @@ export const searchProducts = async (req, res) => {
   try {
     const products = await Product.find({
       name: { $regex: searchTerm, $options: "i" },
+      description: { $regex: searchTerm, $options: "i" },
     });
 
     if (!products.length) {

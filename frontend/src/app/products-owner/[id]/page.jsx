@@ -1,12 +1,11 @@
 'use client';
-
 import { Box, Divider, Flex, Heading, Image, Text, VStack } from '@chakra-ui/react';
 import CardComponent from '@/app/components/Card';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Loading from '@/app/components/Loading';
-
+import { Badge } from '@chakra-ui/react';
 const ProductOwnerPage = () => {
  const [user, setUser] = useState(null);
  const { id } = useParams();
@@ -45,6 +44,7 @@ const ProductOwnerPage = () => {
        alt={user.name}
       />
      )}
+     <Badge color={'green'}>{user.userchecked ? 'Verified' : 'Not verified'}</Badge>
      <Text fontSize="2xl">{user.name}</Text>
      <Text fontSize="md" color="gray.500">
       {user.email}
