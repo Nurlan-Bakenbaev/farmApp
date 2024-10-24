@@ -1,6 +1,11 @@
 'use client';
-import { FormControl, FormHelperText, Link, InputGroup, InputLeftElement } from '@chakra-ui/react';
+
 import {
+ FormControl,
+ FormHelperText,
+ Link,
+ InputGroup,
+ InputLeftElement,
  Button,
  Container,
  Flex,
@@ -76,22 +81,26 @@ const Login = () => {
   router.push('/login');
  }
 
+ const formBg = useColorModeValue('gray.50', 'gray.900'); // Moved here
+
  return (
   <Container maxW={'container.sm'}>
    <Heading as={'h2'} mb={'20px'} size={'xl'} textAlign={'center'}>
     Create an Account
    </Heading>
    <FormControl
-    className={`sign-up-form ${error || (!formError && 'shake')}  `}
+    className={`sign-up-form ${error || (!formError && 'shake')}`}
     w={'full'}
-    bg={useColorModeValue('gray.50', 'gray.900')}
+    bg={formBg} // Use the variable here
     p={6}
     rounded={'lg'}
     shadow={'md'}
    >
     <VStack padding={'10px'} spacing={4}>
      <InputGroup>
-      <InputLeftElement pointerEvents="none" children={<InfoIcon color="gray.300" />} />
+      <InputLeftElement pointerEvents="none">
+       <InfoIcon color="gray.300" />
+      </InputLeftElement>
       <Input
        placeholder="User name"
        name="name"
@@ -101,7 +110,9 @@ const Login = () => {
       />
      </InputGroup>
      <InputGroup>
-      <InputLeftElement pointerEvents="none" children={<AtSignIcon color="gray.300" />} />
+      <InputLeftElement pointerEvents="none">
+       <AtSignIcon color="gray.300" />
+      </InputLeftElement>
       <Input
        isRequired
        type="email"
@@ -113,7 +124,9 @@ const Login = () => {
      </InputGroup>
      {userData.email && <FormHelperText color={'red'}>{error && error.message}</FormHelperText>}
      <InputGroup>
-      <InputLeftElement pointerEvents="none" children={<LockIcon color="gray.300" />} />
+      <InputLeftElement pointerEvents="none">
+       <LockIcon color="gray.300" />
+      </InputLeftElement>
       <Input
        isRequired
        type="password"
@@ -126,7 +139,9 @@ const Login = () => {
      {!formError && <FormHelperText color={'red'}>{validationMessage}</FormHelperText>}
      {formIncomplete && <FormHelperText color={'red'}>Please fill out all fields.</FormHelperText>}
      <InputGroup>
-      <InputLeftElement pointerEvents="none" children={<AddIcon color="gray.300" />} />
+      <InputLeftElement pointerEvents="none">
+       <AddIcon color="gray.300" />
+      </InputLeftElement>
       <Input isRequired type="file" accept="image/*" name="photo" onChange={handleChange} />
      </InputGroup>
      <Flex>
