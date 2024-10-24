@@ -75,7 +75,6 @@ const CardComponent = ({ productData }) => {
   }
  };
 
- // Handle product like/unlike
  const handleLike = async (currentUser, productId) => {
   try {
    await dispatch(likeProduct({ currentUser, productId })).unwrap();
@@ -83,7 +82,7 @@ const CardComponent = ({ productData }) => {
   } catch (error) {
    toast({
       title: `Please Login! `,
-      description: 'Only authenticated users can create products!',
+      description: 'Only authenticated users can save products!',
       status: 'error',
       duration: 3000
      });

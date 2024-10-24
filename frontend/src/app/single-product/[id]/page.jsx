@@ -1,19 +1,6 @@
 'use client';
 
-import {
- Box,
- Text,
- Heading,
- Image,
- Flex,
- Badge,
- VStack,
- HStack,
- IconButton,
- Divider,
- Icon,
- Avatar
-} from '@chakra-ui/react';
+import { Box, Text, Heading, Flex, Badge, VStack, HStack, IconButton, Divider, Icon, Avatar } from '@chakra-ui/react';
 import { MdAttachMoney, MdOutlineCategory, MdLocationOn, MdPhone } from 'react-icons/md';
 import { FaWeightHanging } from 'react-icons/fa';
 import { BiPackage } from 'react-icons/bi';
@@ -25,6 +12,7 @@ import { useEffect } from 'react';
 import Loading from '@/app/components/Loading';
 import { getOneProduct } from '@/app/redux/features/productSlice';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const SingleProductPage = () => {
  const dispatch = useDispatch();
@@ -96,16 +84,7 @@ const SingleProductPage = () => {
     <Box position="relative" mb={5} p={4}>
      <Slider {...settings}>
       {product.images.map((file, index) => (
-       <Image
-        src={`https://farmapp-1.onrender.com/uploads/${file.split('/').pop()}`}
-        key={index}
-        alt={`Product image ${index + 1}`}
-        borderRadius="md"
-        boxShadow="md"
-        objectFit="contain"
-        w="100%"
-        h={{ base: '300px', md: '450px' }}
-       />
+       <Image src={`https://farmapp-1.onrender.com/uploads/${file.split('/').pop()}`} key={index} alt={`Product image ${index + 1}`} width={500} height={500} />
       ))}
      </Slider>
     </Box>
