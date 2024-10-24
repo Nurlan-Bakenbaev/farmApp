@@ -38,7 +38,7 @@ const HomePage = () => {
      New Advertisements
     </Text>
    )}
-   <Flex justifyContent="center" wrap={'wrap'} gap={3}>
+   <Flex justifyContent="space-between" wrap={'wrap'} gap={2}>
     {products.length > 0 ? (
      products?.map((data, idx) => <CardComponent key={idx} productData={data} />)
     ) : (
