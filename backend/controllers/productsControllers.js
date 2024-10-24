@@ -7,14 +7,12 @@ import User from "../models/usersModel.js";
 export const postProduct = async (req, res) => {
   const product = req.body;
 
-  // Validate input
   if (!product.name || !product.userId) {
     return res
       .status(400)
       .json({ success: false, message: "Please provide all fields" });
   }
 
-  // Handle images
   const imagePaths = req.files.map((file) => file.path);
   const newProduct = new Product({
     ...product,
@@ -23,15 +21,13 @@ export const postProduct = async (req, res) => {
   });
 
   try {
-    // Save new product
     await newProduct.save();
 
-    // Update user with new product ID
+
     await User.findByIdAndUpdate(product.userId, {
       $push: { products: newProduct._id },
     });
 
-    // Send success response
     return res.status(201).json({
       success: true,
       message: "Product added successfully",
@@ -43,7 +39,6 @@ export const postProduct = async (req, res) => {
   }
 };
 
-// GET ONE PRODUCT
 export const getOneProduct = async (req, res) => {
   const { id } = req.params;
 
@@ -61,7 +56,6 @@ export const getOneProduct = async (req, res) => {
   }
 };
 
-// GET ALL PRODUCTS
 export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
@@ -72,7 +66,6 @@ export const getAllProducts = async (req, res) => {
   }
 };
 
-// DELETE PRODUCT
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -80,7 +73,6 @@ export const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Find the product by ID to get image paths
     const product = await Product.findById(id);
     if (!product) {
       return res
@@ -88,7 +80,6 @@ export const deleteProduct = async (req, res) => {
         .json({ success: false, message: "Product not found" });
     }
 
-    // Delete associated images
     if (product.images && product.images.length > 0) {
       await Promise.all(
         product.images.map(async (imagePath) => {
@@ -105,7 +96,6 @@ export const deleteProduct = async (req, res) => {
       );
     }
 
-    // Delete the product
     await Product.findByIdAndDelete(id);
     return res.status(200).json({
       success: true,
@@ -121,7 +111,6 @@ export const deleteProduct = async (req, res) => {
   }
 };
 
-// UPDATE PRODUCT
 export const updateProduct = async (req, res) => {
   const { id } = req.params;
   const { name, price, img } = req.body.product;
@@ -150,7 +139,6 @@ export const updateProduct = async (req, res) => {
   }
 };
 
-// Find by  search query
 export const searchProducts = async (req, res) => {
   const { searchTerm } = req.query;
  

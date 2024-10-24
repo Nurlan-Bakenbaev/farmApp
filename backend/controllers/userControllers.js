@@ -114,7 +114,7 @@ export const getUserById = async (req, res) => {
       success: true,
       user,
     });
-  } catch (error) {
+  } catch (error) {222
     return res.status(500).json({
       success: false,
       message: error.message,
