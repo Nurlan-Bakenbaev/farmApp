@@ -77,7 +77,16 @@ const CardComponent = ({ productData }) => {
 
  // Handle product like/unlike
  const handleLike = async (currentUser, productId) => {
-  try {
+ if(!currentUser){
+    toast({
+        title: `Please Login! `,
+        description: "User is not logged in",
+        status: 'error',
+        duration: 3000
+       });
+ }
+    try {
+
    await dispatch(likeProduct({ currentUser, productId })).unwrap();
    setLiked(!liked);
   } catch (error) {
