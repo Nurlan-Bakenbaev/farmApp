@@ -17,6 +17,7 @@ const allowedOrigins = [
   "http://localhost:3000",
   "https://farmapp-1.onrender.com",
   "https://farm-app-frontend.vercel.app",
+  "https://farm-app-lime.vercel.app"
 ];
 
 app.use(
