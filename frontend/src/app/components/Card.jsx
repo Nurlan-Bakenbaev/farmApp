@@ -19,7 +19,6 @@ const CardComponent = ({ productData }) => {
 
  const { user } = useSelector((state) => state.user);
  const [liked, setLiked] = useState(false);
- console.log(user);
  // Handle product deletion
  const handleDelete = async () => {
   try {
@@ -57,11 +56,11 @@ const CardComponent = ({ productData }) => {
   }
  };
 
- if (!productData) {
+ if (!productData || !user) {
   return <Loading />;
  }
  useEffect(() => {
-  if (user.likedProducts.includes(_id)) {
+  if (user?.likedProducts?.includes(_id)) {
    setLiked(true);
   }
  }, [_id]);

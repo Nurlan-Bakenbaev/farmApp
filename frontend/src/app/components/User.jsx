@@ -18,15 +18,18 @@ const User = () => {
  return (
   <Flex display={{ base: 'none', md: 'flex' }} alignItems={'center'} gap={4}>
    <Wrap>
-    <WrapItem>
+    <WrapItem
+     transition="transform 0.4s"
+     _hover={{
+      transform: 'scale(1.04)',
+      overflow: 'hidden',
+      position: 'relative'
+     }}
+    >
      <Avatar
       title={user?.name}
       size="lg"
-      src={
-       `https://farmapp-1.onrender.com/uploads/${user.photo.split('/').pop()}` || (
-        <MdAccountCircle />
-       )
-      }
+      src={`https://farmapp-1.onrender.com/uploads/${user.photo.split('/').pop()}` || <MdAccountCircle />}
       fallback={<MdAccountCircle style={{ fontSize: '2em', color: 'gray.300' }} />}
       borderColor={useColorModeValue('gray.200', 'gray.700')}
       borderWidth={2}

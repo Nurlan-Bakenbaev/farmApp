@@ -40,7 +40,7 @@ export const signIn = async (req, res) => {
  const { email, password } = req.body;
 
  try {
-  const user = await User.findOne({ email }).select('+password');
+  const user = await User.findOne({ email }).populate('+products').select('+password');
   if (!user) {
    return res.status(404).json({ success: false, message: 'User not found' });
   }
@@ -86,7 +86,6 @@ export const signOut = (req, res) => {
  res.clearCookie('Authorization');
  res.status(200).json({ success: true, message: 'Logged out successfully' });
 };
-
 
 export const getUserById = async (req, res) => {
  const { id } = req.params;

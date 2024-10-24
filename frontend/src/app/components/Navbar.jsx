@@ -1,17 +1,5 @@
 'use client';
-import {
- Box,
- Button,
- Container,
- Flex,
- useColorMode,
- useColorModeValue,
- Menu,
- MenuButton,
- MenuList,
- MenuItem,
- IconButton
-} from '@chakra-ui/react';
+import { Box, Button, Container, Flex, useColorMode, useColorModeValue, Menu, MenuButton, MenuList, MenuItem, IconButton } from '@chakra-ui/react';
 import { AddIcon, MoonIcon, SunIcon, HamburgerIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
@@ -72,7 +60,9 @@ const Navbar = () => {
       {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
      </Button>
      {user ? (
-      <User />
+      <Link href={'/current-user'}>
+       <User />
+      </Link>
      ) : (
       <Link href="/signup">
        <Button variant="solid" colorScheme="green">
@@ -84,13 +74,7 @@ const Navbar = () => {
 
     <Box display={{ base: 'flex', md: 'none' }}>
      <Menu>
-      <MenuButton
-       as={IconButton}
-       colorScheme="green"
-       icon={<HamburgerIcon />}
-       variant="outline"
-       aria-label="Menu"
-      />
+      <MenuButton as={IconButton} colorScheme="green" icon={<HamburgerIcon />} variant="outline" aria-label="Menu" />
       <MenuList p={'15px'}>
        <MenuItem>
         <Link href="/create">Create a Product</Link>
