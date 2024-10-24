@@ -1,5 +1,4 @@
 'use client';
-
 import {
  FormControl,
  FormHelperText,
@@ -35,6 +34,8 @@ const Login = () => {
  const { user, loading, error } = useSelector((state) => state.user);
  const dispatch = useDispatch();
  const router = useRouter();
+
+ const formBg = useColorModeValue('gray.50', 'gray.900'); // Moved here
 
  const handleChange = (e) => {
   const { name, value, type, files } = e.target;
@@ -80,8 +81,6 @@ const Login = () => {
  if (user) {
   router.push('/login');
  }
-
- const formBg = useColorModeValue('gray.50', 'gray.900'); // Moved here
 
  return (
   <Container maxW={'container.sm'}>

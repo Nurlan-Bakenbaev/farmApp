@@ -15,7 +15,7 @@ import {
 import { AddIcon, MoonIcon, SunIcon, HamburgerIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
-import User from './User';
+import User from './User.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserFromStorage } from '../redux/features/userSlice';
 import SearchInput from './SearchInput';
@@ -72,7 +72,7 @@ const Navbar = () => {
       {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
      </Button>
      {user ? (
-      <User user={user.user} />
+      <User />
      ) : (
       <Link href="/signup">
        <Button variant="solid" colorScheme="green">
