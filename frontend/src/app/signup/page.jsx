@@ -90,7 +90,7 @@ const Login = () => {
    <FormControl
     className={`sign-up-form ${error || (!formError && 'shake')}`}
     w={'full'}
-    bg={formBg} // Use the variable here
+    bg={formBg} 
     p={6}
     rounded={'lg'}
     shadow={'md'}

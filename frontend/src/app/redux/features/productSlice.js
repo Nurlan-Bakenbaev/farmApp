@@ -5,7 +5,7 @@ const API_BASE_URL = 'https://farmapp-1.onrender.com';
 
 const apiClient = axios.create({
  baseURL: API_BASE_URL,
- withCredentials: true
+ withCredentials: false
 });
 
 export const createProduct = createAsyncThunk('product/createProduct', async (productData, { rejectWithValue }) => {
@@ -17,12 +17,7 @@ export const createProduct = createAsyncThunk('product/createProduct', async (pr
  }
 });
 
-export const getAllProducts = createAsyncThunk('product/getAllProducts', async (_, { getState, rejectWithValue }) => {
- const state = getState();
- if (state.product.cached) {
-  return state.product.products;
- }
-
+export const getAllProducts = createAsyncThunk('product/getAllProducts', async (_, { rejectWithValue }) => {
  try {
   const res = await apiClient.get('/api/product');
   return res.data.products;
@@ -31,6 +26,7 @@ export const getAllProducts = createAsyncThunk('product/getAllProducts', async (
  }
 });
 
+// Thunk to delete a product by ID
 export const deleteProduct = createAsyncThunk('product/deleteProduct', async (productId, { rejectWithValue }) => {
  try {
   await apiClient.delete(`/api/product/${productId}`);
@@ -49,14 +45,11 @@ export const getOneProduct = createAsyncThunk('product/getOneProduct', async (pr
  }
 });
 
-
-
 const initialState = {
  products: [],
  loading: false,
  success: false,
  error: null,
- cached: false,
  singleProduct: null
 };
 
@@ -69,12 +62,12 @@ const productSlice = createSlice({
    state.loading = false;
    state.success = false;
    state.error = null;
-   state.cached = false;
    state.singleProduct = null;
   }
  },
  extraReducers: (builder) => {
   builder
+
    .addCase(createProduct.pending, (state) => {
     state.loading = true;
     state.success = false;
@@ -84,7 +77,6 @@ const productSlice = createSlice({
     state.loading = false;
     state.success = true;
     state.products.push(action.payload);
-    state.cached = false;
     state.error = null;
    })
    .addCase(createProduct.rejected, (state, action) => {
@@ -92,6 +84,7 @@ const productSlice = createSlice({
     state.success = false;
     state.error = action.payload;
    })
+
    .addCase(getAllProducts.pending, (state) => {
     state.loading = true;
     state.success = false;
@@ -101,7 +94,6 @@ const productSlice = createSlice({
     state.loading = false;
     state.success = true;
     state.products = action.payload;
-    state.cached = true;
     state.error = null;
    })
    .addCase(getAllProducts.rejected, (state, action) => {
@@ -109,6 +101,7 @@ const productSlice = createSlice({
     state.success = false;
     state.error = action.payload;
    })
+
    .addCase(deleteProduct.pending, (state) => {
     state.loading = true;
     state.success = false;
@@ -125,6 +118,7 @@ const productSlice = createSlice({
     state.success = false;
     state.error = action.payload;
    })
+
    .addCase(getOneProduct.pending, (state) => {
     state.loading = true;
     state.success = false;

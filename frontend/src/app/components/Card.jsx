@@ -18,8 +18,12 @@ const CardComponent = ({ productData }) => {
  const { _id, price, minOrder, user: userId, username, category, quantity, bio, name, images, delivery, address, createdAt } = productData;
 
  const { user } = useSelector((state) => state.user);
- const [liked, setLiked] = useState(false);
- // Handle product deletion
+ const [liked, setLiked] = useState(user?.likedProducts?.includes(_id));
+ useEffect(() => {
+  if (user?.likedProducts?.includes(_id)) {
+   setLiked(true);
+  }
+ }, [_id]);
  const handleDelete = async () => {
   try {
    await dispatch(deleteProduct(_id)).unwrap();
@@ -59,11 +63,7 @@ const CardComponent = ({ productData }) => {
  if (!productData || !user) {
   return <Loading />;
  }
- useEffect(() => {
-  if (user?.likedProducts?.includes(_id)) {
-   setLiked(true);
-  }
- }, [_id]);
+
  return (
   <Box
    maxW={{ base: '100%', sm: '260px' }}
