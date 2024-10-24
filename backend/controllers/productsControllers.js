@@ -153,6 +153,7 @@ export const updateProduct = async (req, res) => {
 // Find by  search query
 export const searchProducts = async (req, res) => {
   const { searchTerm } = req.query;
+ 
 
   try {
     const products = await Product.find({
@@ -163,7 +164,7 @@ export const searchProducts = async (req, res) => {
     });
     if (!products.length) {
       return res
-        .status(404)
+        .status(200)
         .json({ success: false, message: "No products found" });
     }
     return res

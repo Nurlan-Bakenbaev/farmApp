@@ -25,10 +25,9 @@ const SearchInput = () => {
  const [loading, setLoading] = useState(false);
  const { isOpen, onOpen, onClose } = useDisclosure();
  const toast = useToast();
-
+ console.log(searchTerm);
  const handleSearch = async () => {
   if (searchTerm.trim()) {
-   setLoading(true);
    try {
     const response = await axios.get(`https://farmapp-1.onrender.com/api/search`, {
      params: { searchTerm: searchTerm }
@@ -36,7 +35,6 @@ const SearchInput = () => {
     setResults(response.data.products);
     onOpen();
    } catch (err) {
-    console.log(err)
     toast({
      title: 'Error',
      description: `${err}`,
@@ -70,7 +68,7 @@ const SearchInput = () => {
      onChange={(e) => setSearchTerm(e.target.value)}
      onKeyPress={handleKeyPress}
     />
-    <Button backgroundColor="green.600" onClick={handleSearch} isLoading={loading}>
+    <Button backgroundColor="green.600" onClick={() => handleSearch()} isLoading={loading}>
      <CiSearch size={30} />
     </Button>
    </Stack>

@@ -4,9 +4,6 @@ import {
  Button,
  Container,
  Flex,
- Input,
- Stack,
- Text,
  useColorMode,
  useColorModeValue,
  Menu,
@@ -15,20 +12,19 @@ import {
  MenuItem,
  IconButton
 } from '@chakra-ui/react';
-import { IoMdAdd } from 'react-icons/io';
-import { MdLightMode, MdModeNight } from 'react-icons/md';
-import { CiSearch } from 'react-icons/ci';
+import { AddIcon, MoonIcon, SunIcon, HamburgerIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
 import User from './User';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUserFromStorage } from '../redux/features/userSlice';
-import { RxHamburgerMenu } from 'react-icons/rx';
 import SearchInput from './SearchInput';
+
 const Navbar = () => {
  const { colorMode, toggleColorMode } = useColorMode();
  const dispatch = useDispatch();
- const { user, loading, error } = useSelector((state) => state.user);
+ const { user } = useSelector((state) => state.user);
+
  useEffect(() => {
   const storedUser = localStorage.getItem('user');
   if (storedUser) {
@@ -37,9 +33,8 @@ const Navbar = () => {
  }, [dispatch]);
 
  return (
-  <Container maxW={'100%'} bg={useColorModeValue('gray.100', 'gray.900')}>
-   <Flex mx="auto" h={'80px'} gap={2} alignItems={'center'} justifyContent={'space-between'}>
-    {/* Navbar Logo */}
+  <Container maxW={'100%'} bg={useColorModeValue('gray.100', 'gray.900')} py={4}>
+   <Flex mx="auto" h={'80px'} alignItems={'center'} justifyContent={'space-between'}>
     <Box
      display={{ base: 'none', md: 'block' }}
      bgGradient="linear(to-r, green.500, green.700)"
@@ -47,62 +42,63 @@ const Navbar = () => {
      fontSize={{ base: '22px', md: '28px' }}
      fontWeight="extrabold"
     >
-     <Link href={'/'}>ECO-FARM</Link>
+     <Link href="/">ECO-FARM</Link>
     </Box>
 
-    {/* Search Bar */}
-    <SearchInput />
+    <Box flex={1} mx={4}>
+     <SearchInput />
+    </Box>
 
-    {/* Buttons and User Menu */}
-    <Box display={{ base: 'none', md: 'flex' }} alignItems={'center'} gap={3}>
-     <Link href={'/create'} className="nav-Link">
-      <IoMdAdd />
+    <Flex alignItems={'center'} gap={4}>
+     <Link href="/create">
+      <IconButton
+       display={{ base: 'none', md: 'block' }}
+       aria-label="Create Product"
+       icon={<AddIcon />}
+       variant="outline"
+       colorScheme="green"
+       size="md"
+       _hover={{ backgroundColor: 'green.500', color: 'white' }}
+      />
      </Link>
      <Button
       display={{ base: 'none', md: 'block' }}
-      _hover={{ backgroundColor: '#FF0080' }}
-      backgroundColor={'#7921CA'}
-      color={'white'}
       onClick={toggleColorMode}
+      variant="outline"
+      colorScheme="green"
+      size="md"
+      _hover={{ backgroundColor: 'green.500', color: 'white' }}
      >
-      {colorMode === 'light' ? <MdModeNight /> : <MdLightMode />}
+      {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
      </Button>
-     <Flex>
-      {user ? (
-       <User user={user.user} />
-      ) : (
-       <Box>
-        <Link href={'/signup'} className="nav-Link">
-         Signup
-        </Link>
-       </Box>
-      )}
-     </Flex>
-    </Box>
+     {user ? (
+      <User user={user.user} />
+     ) : (
+      <Link href="/signup">
+       <Button variant="solid" colorScheme="green">
+        Signup
+       </Button>
+      </Link>
+     )}
+    </Flex>
 
-    {/* Hamburger Menu for small screens */}
     <Box display={{ base: 'flex', md: 'none' }}>
      <Menu>
       <MenuButton
        as={IconButton}
-       color={'purple'}
-       icon={<RxHamburgerMenu fontSize={'30px'} />}
+       colorScheme="green"
+       icon={<HamburgerIcon />}
        variant="outline"
        aria-label="Menu"
       />
       <MenuList p={'15px'}>
        <MenuItem>
-        <Link href={'/create'}>Create a Product</Link>
+        <Link href="/create">Create a Product</Link>
        </MenuItem>
-       <MenuItem onClick={toggleColorMode}>Set Mode</MenuItem>
-       <Text
-        bgGradient="linear(to-r, green.400, green.700)"
-        bgClip="text"
-        fontSize={{ base: '28px', md: '36px' }}
-        fontWeight="extrabold"
-       >
-        <Link href={'/'}>ECO-FARM</Link>
-       </Text>
+       <MenuItem onClick={toggleColorMode}>Toggle Mode</MenuItem>
+       <MenuItem>
+        <Link href="/">ECO-FARM</Link>
+       </MenuItem>
       </MenuList>
      </Menu>
     </Box>
