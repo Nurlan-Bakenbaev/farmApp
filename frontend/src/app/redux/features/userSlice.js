@@ -13,7 +13,6 @@ export const postUser = createAsyncThunk('user/postUser', async (formData, { rej
   });
   return res.data;
  } catch (error) {
-  // Error handling if error.response is undefined
   const errorMsg = error.response?.data || 'Failed to sign up';
   return rejectWithValue(errorMsg);
  }
@@ -27,39 +26,38 @@ export const loginUser = createAsyncThunk('user/login', async (userData, { rejec
   });
   return res.data;
  } catch (error) {
-  // Error handling if error.response is undefined
   const errorMsg = error.response?.data || 'Failed to log in';
   return rejectWithValue(errorMsg);
  }
 });
 
 // Thunk for Liking/Unliking a Product
-export const likeProduct = createAsyncThunk(
- 'user/likeProduct',
- async ({ currentUser: userId, productId }, { rejectWithValue }) => {
-  try {
-   console.log(userId, productId);
-   const res = await axios.patch(
-    `${API_BASE_URL}/user/${userId}/like/${productId}`,
-    {},
-    {
-     headers: { 'Content-Type': 'application/json' },
-     withCredentials: true
-    }
-   );
-   return res.data;
-  } catch (error) {
-   // Error handling if error.response is undefined
-   const errorMsg = error.response?.data || 'Failed to update like status';
-   return rejectWithValue(errorMsg);
-  }
+export const likeProduct = createAsyncThunk('user/likeProduct', async ({ currentUser: userId, productId }, { rejectWithValue }) => {
+ try {
+  console.log(userId, productId);
+  const res = await axios.patch(
+   `${API_BASE_URL}/user/${userId}/like/${productId}`,
+   {},
+   {
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true
+   }
+  );
+  return res.data; // Ensure this returns the updated user object
+ } catch (error) {
+  const errorMsg = error.response?.data || 'Failed to update like status';
+  return rejectWithValue(errorMsg);
  }
-);
+});
 
 const userSlice = createSlice({
  name: 'user',
  initialState: {
-  user: null,
+  user: {
+   id: null,
+   username: '',
+   likedProducts: [] // Initial state for likedProducts
+  },
   loading: false,
   error: null
  },
@@ -68,7 +66,11 @@ const userSlice = createSlice({
    state.user = action.payload;
   },
   logout: (state) => {
-   state.user = null;
+   state.user = {
+    id: null,
+    username: '',
+    likedProducts: [] // Reset liked products on logout
+   };
    localStorage.removeItem('user');
   }
  },
@@ -81,7 +83,7 @@ const userSlice = createSlice({
    })
    .addCase(postUser.fulfilled, (state, action) => {
     state.loading = false;
-    state.user = action.payload;
+    state.user = action.payload; // Ensure the user payload has likedProducts
     state.error = null;
     localStorage.setItem('user', JSON.stringify(action.payload));
    })
@@ -98,7 +100,7 @@ const userSlice = createSlice({
    })
    .addCase(loginUser.fulfilled, (state, action) => {
     state.loading = false;
-    state.user = action.payload;
+    state.user = action.payload; // Ensure the user payload has likedProducts
     state.error = null;
     localStorage.setItem('user', JSON.stringify(action.payload));
    })
@@ -116,10 +118,10 @@ const userSlice = createSlice({
    .addCase(likeProduct.fulfilled, (state, action) => {
     state.loading = false;
 
+    // Assuming action.payload contains the updated user data including likedProducts
     state.user = { ...state.user, likedProducts: action.payload.likedProducts };
 
     state.error = null;
-
     localStorage.setItem('user', JSON.stringify(state.user));
    })
    .addCase(likeProduct.rejected, (state, action) => {

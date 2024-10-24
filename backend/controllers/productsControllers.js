@@ -142,10 +142,15 @@ export const searchProducts = async (req, res) => {
 };
 
 export const getManyById = async (req, res) => {
+ const { ids } = req.query;
+ console.log(ids);
  try {
-  const { ids } = req.query;
+  if (!ids) {
+   return res.status(400).json({ success: false, message: 'No IDs provided' });
+  }
+  const idArray = ids.split(',');
   const likedProducts = await Product.find({ _id: { $in: ids } });
-  return res.status(200).json({ success: true, quantity: products.length, likedProducts });
+  return res.status(200).json({ success: true, quantity: likedProducts.length, likedProducts });
  } catch (error) {
   res.status(500).json({ error: error.message });
  }

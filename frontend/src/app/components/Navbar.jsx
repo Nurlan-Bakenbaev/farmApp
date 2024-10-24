@@ -19,7 +19,7 @@ const Navbar = () => {
    dispatch(setUserFromStorage(JSON.parse(storedUser)));
   }
  }, [dispatch]);
- const userLikedProducts = user?.user?.likedProducts?.length;
+ const likedProducts = useSelector((state) => state.user.user.likedProducts.length);
 
  return (
   <Container maxW={'100%'} bg={useColorModeValue('gray.100', 'gray.900')} py={4}>
@@ -75,7 +75,7 @@ const Navbar = () => {
         height={'18px'}
         borderRadius={'50%'}
        >
-        {userLikedProducts}
+        {likedProducts}
        </Text>
       </Link>
      ) : (

@@ -18,12 +18,12 @@ const CardComponent = ({ productData }) => {
  const { _id, price, minOrder, user: userId, username, category, quantity, bio, name, images, delivery, address, createdAt } = productData;
 
  const { user } = useSelector((state) => state.user);
- const [liked, setLiked] = useState(user?.likedProducts?.includes(_id));
+ const [liked, setLiked] = useState(user?.user?.likedProducts?.includes(_id));
  useEffect(() => {
-  if (user?.likedProducts?.includes(_id)) {
+  if (user?.user?.likedProducts?.includes(_id)) {
    setLiked(true);
   }
- }, [_id]);
+ }, [user?.user?.likedProducts, _id]);
  const handleDelete = async () => {
   try {
    await dispatch(deleteProduct(_id)).unwrap();
@@ -47,6 +47,7 @@ const CardComponent = ({ productData }) => {
  };
 
  const handleLike = async (currentUser, productId) => {
+  console.log(currentUser, productId);
   try {
    await dispatch(likeProduct({ currentUser, productId })).unwrap();
    setLiked(!liked);
@@ -75,21 +76,23 @@ const CardComponent = ({ productData }) => {
    _hover={{ transform: 'scale(1.03)' }}
   >
    <Box position="relative">
-    <Image
-     src={images && `https://farmapp-1.onrender.com/uploads/${images[0].split('/').pop()}`}
-     alt={name}
-     fallbackSrc="/default-image.jpg"
-     boxSize="300px"
-     objectFit="cover"
-     borderTopRadius="lg"
-    />
+    <Link href={`/single-product/${_id}`}>
+     <Image
+      src={images && `https://farmapp-1.onrender.com/uploads/${images[0].split('/').pop()}`}
+      alt={name}
+      fallbackSrc="/default-image.jpg"
+      boxSize="300px"
+      objectFit="cover"
+      borderTopRadius="lg"
+     />
+    </Link>
     {bio && (
      <Badge position="absolute" top="10px" left="10px" colorScheme="green">
       BIO
      </Badge>
     )}
     <Flex alignItems="center" gap={2}>
-     {user?.user._id === userId && (
+     {user?.user?._id === userId && (
       <IconButton
        aria-label="Delete product"
        icon={<MdOutlineDelete />}
@@ -106,8 +109,9 @@ const CardComponent = ({ productData }) => {
       />
      )}
      <IconButton
+      display={userId === user.user._id ? 'none' : 'flex'}
       aria-label="Like product"
-      icon={liked ? <FcLike /> : <FcLikePlaceholder />}
+      icon={!liked ? <FcLike /> : <FcLikePlaceholder />}
       position="absolute"
       top="10px"
       right="50px"

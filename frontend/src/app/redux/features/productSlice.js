@@ -8,6 +8,7 @@ const apiClient = axios.create({
  withCredentials: false
 });
 
+// Thunk to create a product
 export const createProduct = createAsyncThunk('product/createProduct', async (productData, { rejectWithValue }) => {
  try {
   const res = await apiClient.post('/api/product', productData);
@@ -17,6 +18,7 @@ export const createProduct = createAsyncThunk('product/createProduct', async (pr
  }
 });
 
+// Thunk to get all products
 export const getAllProducts = createAsyncThunk('product/getAllProducts', async (_, { rejectWithValue }) => {
  try {
   const res = await apiClient.get('/api/product');
@@ -26,7 +28,7 @@ export const getAllProducts = createAsyncThunk('product/getAllProducts', async (
  }
 });
 
-// Thunk to delete a product by ID
+// Thunk to delete a product
 export const deleteProduct = createAsyncThunk('product/deleteProduct', async (productId, { rejectWithValue }) => {
  try {
   await apiClient.delete(`/api/product/${productId}`);
@@ -36,12 +38,23 @@ export const deleteProduct = createAsyncThunk('product/deleteProduct', async (pr
  }
 });
 
+// Thunk to get a single product by ID
 export const getOneProduct = createAsyncThunk('product/getOneProduct', async (productId, { rejectWithValue }) => {
  try {
   const res = await apiClient.get(`/api/product/${productId}`);
   return res.data.product;
  } catch (error) {
   return rejectWithValue(error.response?.data?.message || 'Failed to fetch product');
+ }
+});
+
+// Thunk to like/unlike a product
+export const likeProduct = createAsyncThunk('product/likeProduct', async ({ currentUser, productId }, { rejectWithValue }) => {
+ try {
+  const res = await apiClient.post(`/api/product/${productId}/like`, { userId: currentUser });
+  return { productId, likedProducts: res.data.likedProducts };
+ } catch (error) {
+  return rejectWithValue(error.response?.data?.message || 'Failed to like product');
  }
 });
 
@@ -67,7 +80,7 @@ const productSlice = createSlice({
  },
  extraReducers: (builder) => {
   builder
-
+   // Create product
    .addCase(createProduct.pending, (state) => {
     state.loading = true;
     state.success = false;
@@ -85,6 +98,7 @@ const productSlice = createSlice({
     state.error = action.payload;
    })
 
+   // Get all products
    .addCase(getAllProducts.pending, (state) => {
     state.loading = true;
     state.success = false;
@@ -102,6 +116,7 @@ const productSlice = createSlice({
     state.error = action.payload;
    })
 
+   // Delete product
    .addCase(deleteProduct.pending, (state) => {
     state.loading = true;
     state.success = false;
@@ -119,6 +134,7 @@ const productSlice = createSlice({
     state.error = action.payload;
    })
 
+   // Get one product
    .addCase(getOneProduct.pending, (state) => {
     state.loading = true;
     state.success = false;
@@ -131,6 +147,31 @@ const productSlice = createSlice({
     state.error = null;
    })
    .addCase(getOneProduct.rejected, (state, action) => {
+    state.loading = false;
+    state.success = false;
+    state.error = action.payload;
+   })
+
+   // Like product
+   .addCase(likeProduct.pending, (state) => {
+    state.loading = true;
+    state.success = false;
+    state.error = null;
+   })
+   .addCase(likeProduct.fulfilled, (state, action) => {
+    state.loading = false;
+    state.success = true;
+    const { productId, likedProducts } = action.payload;
+    // Update the liked state of the product in the products array
+    state.products = state.products.map((product) => {
+     if (product._id === productId) {
+      return { ...product, isLiked: likedProducts.includes(productId) };
+     }
+     return product;
+    });
+    state.error = null;
+   })
+   .addCase(likeProduct.rejected, (state, action) => {
     state.loading = false;
     state.success = false;
     state.error = action.payload;
