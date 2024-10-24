@@ -2,14 +2,25 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Heading, Text, Avatar, SimpleGrid, VStack, HStack, Spinner, useToast } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserProducts } from '../redux/features/productSlice';
 import Loading from '../components/Loading';
 import CardComponent from '../components/Card';
+import axios from 'axios';
 
 const CurrentUserPage = () => {
- const toast = useToast();
-
+ const [likedProducts, setLikedProducts] = useState([]);
  const { user, loading, error } = useSelector((state) => state.user);
+ const userLikedProducts = user?.user?.likedProducts;
+
+ const getLikedProd = async () => {
+  try {
+   const res = await axios.get(`https://farmapp-1.onrender.com/api/likedproducts?products=${userLikedProducts}`);
+
+   console.log(res.data);
+  } catch (error) {
+   console.error('Error fetching liked products', error);
+  }
+ };
+ getLikedProd();
 
  if (loading) {
   return <Loading />;
@@ -18,7 +29,6 @@ const CurrentUserPage = () => {
  if (!user) {
   return <Text align={'center'}>No user information available.</Text>;
  }
- console.log(user.user.products);
 
  return (
   <Box p={5}>

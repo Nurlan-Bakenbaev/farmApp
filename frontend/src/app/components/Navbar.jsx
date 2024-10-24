@@ -1,5 +1,5 @@
 'use client';
-import { Box, Button, Container, Flex, useColorMode, useColorModeValue, Menu, MenuButton, MenuList, MenuItem, IconButton } from '@chakra-ui/react';
+import { Box, Button, Container, Flex, useColorMode, useColorModeValue, Menu, MenuButton, MenuList, MenuItem, IconButton, Text } from '@chakra-ui/react';
 import { AddIcon, MoonIcon, SunIcon, HamburgerIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 import React, { useEffect } from 'react';
@@ -19,6 +19,7 @@ const Navbar = () => {
    dispatch(setUserFromStorage(JSON.parse(storedUser)));
   }
  }, [dispatch]);
+ const userLikedProducts = user?.user?.likedProducts?.length;
 
  return (
   <Container maxW={'100%'} bg={useColorModeValue('gray.100', 'gray.900')} py={4}>
@@ -60,8 +61,22 @@ const Navbar = () => {
       {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
      </Button>
      {user ? (
-      <Link href={'/current-user'}>
+      <Link position={'absolute'} href={'/current-user'}>
        <User />
+       <Text
+        display={{ base: 'none', md: 'block' }}
+        position={'relative'}
+        align={'center'}
+        top={-5}
+        left={0}
+        fontSize={'12px'}
+        backgroundColor={'red'}
+        w={'18px'}
+        height={'18px'}
+        borderRadius={'50%'}
+       >
+        {userLikedProducts}
+       </Text>
       </Link>
      ) : (
       <Link href="/signup">

@@ -16,7 +16,7 @@ const User = () => {
  };
 
  return (
-  <Flex display={{ base: 'none', md: 'flex' }} alignItems={'center'} gap={4}>
+  <Flex display={{ base: 'none', md: 'flex' }} zIndex={20} alignItems={'center'} gap={4}>
    <Wrap>
     <WrapItem
      transition="transform 0.4s"
