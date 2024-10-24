@@ -33,7 +33,7 @@ const Login = () => {
   if (user) {
    toast({
     title: 'Welcome!',
-    description: `You have successfully logged in.`,
+    description: 'You have successfully logged in.', // Fixed escaping issue here
     status: 'success',
     duration: 3000,
     isClosable: true

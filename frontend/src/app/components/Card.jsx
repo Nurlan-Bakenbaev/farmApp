@@ -3,7 +3,6 @@ import {
  Box,
  Image,
  Text,
- Stack,
  Flex,
  Avatar,
  Badge,
@@ -21,14 +20,7 @@ import {
  MdAttachMoney,
  MdProductionQuantityLimits
 } from 'react-icons/md';
-import {
- FaPhone,
- FaTruck,
- FaLeaf,
- FaWarehouse,
- FaMapMarkerAlt,
- FaCalendarAlt
-} from 'react-icons/fa';
+import { FaTruck, FaLeaf, FaWarehouse, FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteProduct } from '../redux/features/productSlice';
 import ModalWindow from './ModalWindow';
@@ -57,17 +49,9 @@ const CardComponent = ({ productData }) => {
   createdAt
  } = productData;
 
- const { user } = useSelector((state) => state.user.user);
- const isLiked = user.likedProducts.some((likedProductId) => likedProductId === _id);
-
- const [liked, setLiked] = useState(isLiked || false);
-
- useEffect(() => {
-  if (isLiked) {
-   setLiked(isLiked);
-  }
- }, [user, _id]);
-
+ const { user } = useSelector((state) => state.user);
+ const [liked, setLiked] = useState(false);
+ // Handle product deletion
  const handleDelete = async () => {
   try {
    await dispatch(deleteProduct(_id)).unwrap();
@@ -90,9 +74,9 @@ const CardComponent = ({ productData }) => {
   }
  };
 
+ // Handle product like/unlike
  const handleLike = async (currentUser, productId) => {
   try {
-   console.log(currentUser, productId);
    await dispatch(likeProduct({ currentUser, productId })).unwrap();
    setLiked(!liked);
   } catch (error) {
@@ -104,8 +88,7 @@ const CardComponent = ({ productData }) => {
    });
   }
  };
-
- if (!productData || !user) {
+ if (!productData) {
   return <Loading />;
  }
 
@@ -153,7 +136,7 @@ const CardComponent = ({ productData }) => {
       top="10px"
       right="50px"
       size="md"
-      onClick={() => handleLike(user._id, _id)}
+      onClick={() => handleLike(user.user._id, _id)}
       variant="solid"
       colorScheme={liked ? 'green' : 'gray'}
      />

@@ -20,7 +20,7 @@ const ProductOwnerPage = () => {
  };
  useEffect(() => {
   getUserOwner();
- }, [id]);
+ }, [getUserOwner, id]);
  if (!user) {
   return <Loading />;
  }
