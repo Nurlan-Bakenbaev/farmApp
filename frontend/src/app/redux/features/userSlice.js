@@ -13,7 +13,9 @@ export const postUser = createAsyncThunk('user/postUser', async (formData, { rej
   });
   return res.data;
  } catch (error) {
-  return rejectWithValue(error.response.data);
+  // Error handling if error.response is undefined
+  const errorMsg = error.response?.data || 'Failed to sign up';
+  return rejectWithValue(errorMsg);
  }
 });
 
@@ -25,19 +27,20 @@ export const loginUser = createAsyncThunk('user/login', async (userData, { rejec
   });
   return res.data;
  } catch (error) {
-  return rejectWithValue(error.response.data);
+  // Error handling if error.response is undefined
+  const errorMsg = error.response?.data || 'Failed to log in';
+  return rejectWithValue(errorMsg);
  }
 });
 
 // Thunk for Liking/Unliking a Product
 export const likeProduct = createAsyncThunk(
  'user/likeProduct',
- async ({ currentUser, productId }, { rejectWithValue }) => {
+ async ({ currentUser: userId, productId }, { rejectWithValue }) => {
   try {
-  console.log(currentUser, productId);
-
+   console.log(userId, productId);
    const res = await axios.patch(
-    `${API_BASE_URL}/user/${currentUser}/like/${productId}`,
+    `${API_BASE_URL}/user/${userId}/like/${productId}`,
     {},
     {
      headers: { 'Content-Type': 'application/json' },
@@ -46,7 +49,9 @@ export const likeProduct = createAsyncThunk(
    );
    return res.data;
   } catch (error) {
-   return rejectWithValue(error.response.data);
+   // Error handling if error.response is undefined
+   const errorMsg = error.response?.data || 'Failed to update like status';
+   return rejectWithValue(errorMsg);
   }
  }
 );
@@ -111,7 +116,7 @@ const userSlice = createSlice({
    .addCase(likeProduct.fulfilled, (state, action) => {
     state.loading = false;
 
-    state.user = action.payload;
+    state.user = { ...state.user, likedProducts: action.payload.likedProducts };
 
     state.error = null;
 

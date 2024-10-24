@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
  Box,
  Image,
@@ -40,6 +40,7 @@ const CardComponent = ({ productData }) => {
  const { isOpen, onOpen, onClose } = useDisclosure();
  const dispatch = useDispatch();
  const toast = useToast();
+
  const {
   _id,
   price,
@@ -55,11 +56,18 @@ const CardComponent = ({ productData }) => {
   address,
   createdAt
  } = productData;
- const { user, loading, error } = useSelector((state) => state.user);
- console.log(user);
 
- const isLiked = user?.likedProducts?.some((product) => product._id === _id);
- const [liked, setLiked] = useState(isLiked);
+ const { user } = useSelector((state) => state.user.user);
+ const isLiked = user.likedProducts.some((likedProductId) => likedProductId === _id);
+
+ const [liked, setLiked] = useState(isLiked || false);
+
+ useEffect(() => {
+  if (isLiked) {
+   setLiked(isLiked);
+  }
+ }, [user, _id]);
+
  const handleDelete = async () => {
   try {
    await dispatch(deleteProduct(_id)).unwrap();
@@ -81,12 +89,12 @@ const CardComponent = ({ productData }) => {
    });
   }
  };
- const handleLike = async (userId, productId) => {
-  console.log(userId, productId);
 
+ const handleLike = async (currentUser, productId) => {
   try {
+   console.log(currentUser, productId);
+   await dispatch(likeProduct({ currentUser, productId })).unwrap();
    setLiked(!liked);
-   await dispatch(likeProduct({ userId, productId })).unwrap();
   } catch (error) {
    toast({
     title: `Error liking/unliking ${name}`,
@@ -96,9 +104,11 @@ const CardComponent = ({ productData }) => {
    });
   }
  };
+
  if (!productData || !user) {
   return <Loading />;
  }
+
  return (
   <Box
    maxW="260px"
@@ -143,7 +153,7 @@ const CardComponent = ({ productData }) => {
       top="10px"
       right="50px"
       size="md"
-      onClick={() => handleLike(user.user._id, _id)}
+      onClick={() => handleLike(user._id, _id)}
       variant="solid"
       colorScheme={liked ? 'green' : 'gray'}
      />
@@ -223,4 +233,5 @@ const CardComponent = ({ productData }) => {
   </Box>
  );
 };
+
 export default CardComponent;

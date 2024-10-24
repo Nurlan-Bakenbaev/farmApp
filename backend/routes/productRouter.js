@@ -35,4 +35,5 @@ productRouter
   .get(getOneProduct);
   
 productRouter.get("/search", searchProducts);
+
 export default productRouter;

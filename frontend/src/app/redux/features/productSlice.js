@@ -17,9 +17,11 @@ export const createProduct = createAsyncThunk(
  }
 );
 
+
 export const getAllProducts = createAsyncThunk(
  'product/getAllProducts',
  async (_, { getState, rejectWithValue }) => {
+  
   const state = getState();
 
   if (state.product.cached) {
@@ -35,6 +37,7 @@ export const getAllProducts = createAsyncThunk(
  }
 );
 
+
 export const deleteProduct = createAsyncThunk(
  'product/deleteProduct',
  async (productId, { rejectWithValue }) => {
@@ -46,6 +49,7 @@ export const deleteProduct = createAsyncThunk(
   }
  }
 );
+
 
 export const getOneProduct = createAsyncThunk(
  'product/getOneProduct',
@@ -61,6 +65,7 @@ export const getOneProduct = createAsyncThunk(
  }
 );
 
+
 const initialState = {
  products: [],
  loading: false,
@@ -68,6 +73,7 @@ const initialState = {
  error: null,
  cached: false
 };
+
 
 const productSlice = createSlice({
  name: 'product',
@@ -101,6 +107,7 @@ const productSlice = createSlice({
     state.error = action.payload || 'Failed to create product';
    })
 
+  
    .addCase(getAllProducts.pending, (state) => {
     state.loading = true;
     state.success = false;
@@ -119,6 +126,7 @@ const productSlice = createSlice({
     state.error = action.payload || 'Failed to fetch products';
    })
 
+  
    .addCase(deleteProduct.pending, (state) => {
     state.loading = true;
     state.success = false;
@@ -127,7 +135,7 @@ const productSlice = createSlice({
    .addCase(deleteProduct.fulfilled, (state, action) => {
     state.loading = false;
     state.success = true;
-    state.products = state.products.filter((product) => product._id !== action.payload);
+    state.products = state.products.filter((product) => product._id !== action.payload); 
     state.error = null;
    })
    .addCase(deleteProduct.rejected, (state, action) => {
@@ -153,6 +161,7 @@ const productSlice = createSlice({
    });
  }
 });
+
 
 export const { resetProductState } = productSlice.actions;
 export default productSlice.reducer;

@@ -152,7 +152,7 @@ export const updateProduct = async (req, res) => {
 
 // Find by  search query
 export const searchProducts = async (req, res) => {
-  const { searchTerm } = req.query;
+  const { searchTerm } = req.params;
   try {
     const products = await Product.find({
       name: { $regex: searchTerm, $options: "i" },

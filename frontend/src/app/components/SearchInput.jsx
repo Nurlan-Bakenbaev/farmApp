@@ -30,15 +30,16 @@ const SearchInput = () => {
   if (searchTerm.trim()) {
    setLoading(true);
    try {
-    const response = await axios.get(`http://localhost:8000/api/search/`, {
+    const response = await axios.get(`https://farmapp-1.onrender.com/api/search`, {
      params: { searchTerm: searchTerm }
     });
     setResults(response.data.products);
     onOpen();
    } catch (err) {
+    console.log(err)
     toast({
      title: 'Error',
-     description: 'Failed to fetch products. Please try again later.',
+     description: `${err}`,
      status: 'error',
      duration: 5000,
      isClosable: true
