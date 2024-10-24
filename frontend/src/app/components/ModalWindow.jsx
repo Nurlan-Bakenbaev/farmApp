@@ -12,6 +12,7 @@ import {
  Box
 } from '@chakra-ui/react';
 import { MdOutlineWarningAmber } from 'react-icons/md';
+
 const ModalWindow = ({ isOpen, onClose, handleDelete, id, itemName }) => {
  return (
   <Modal isOpen={isOpen} onClose={onClose}>
@@ -25,7 +26,7 @@ const ModalWindow = ({ isOpen, onClose, handleDelete, id, itemName }) => {
     </Box>
     <ModalCloseButton />
     <ModalBody>
-     <Text>Are you sure you want to delete {itemName}?</Text>
+     <Text>Are you sure you want to delete &quot;{itemName}&quot;?</Text> {/* Escaped quotes */}
     </ModalBody>
 
     <ModalFooter>
