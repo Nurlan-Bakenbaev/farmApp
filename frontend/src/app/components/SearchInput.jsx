@@ -63,6 +63,8 @@ const SearchInput = () => {
   <Stack display="flex" flexDirection="column" alignItems="center">
    <Stack display="flex" flexDirection="row" alignItems="center">
     <Input
+     border={'1px solid green'}
+     focusBorderColor="none"
      placeholder="Search..."
      value={searchTerm}
      onChange={(e) => setSearchTerm(e.target.value)}

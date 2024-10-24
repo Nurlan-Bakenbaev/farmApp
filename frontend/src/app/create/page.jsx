@@ -22,7 +22,8 @@ import {
  AccordionPanel,
  Checkbox,
  Accordion,
- AccordionIcon
+ AccordionIcon,
+ useColorModeValue
 } from '@chakra-ui/react';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
@@ -48,11 +49,7 @@ const CreateProductForm = () => {
   userId: null,
   username: null
  });
- const {
-  loading: productLoading,
-  error: productError,
-  success
- } = useSelector((state) => state.product);
+ const { loading: productLoading, error: productError, success } = useSelector((state) => state.product);
  const [files, setFiles] = useState([]);
  const [filePreviews, setFilePreviews] = useState([]);
  const router = useRouter();
@@ -84,7 +81,6 @@ const CreateProductForm = () => {
    }));
   }
  };
- console.log(productFormData.minOrder);
  const handleFilesChange = (e) => {
   const newFiles = Array.from(e.target.files);
   const updatedFiles = [...files, ...newFiles];
@@ -147,7 +143,7 @@ const CreateProductForm = () => {
    });
   }
  };
-
+ const backgroundColor = useColorModeValue(' #e6ffe6', 'gray.900');
  useEffect(() => {
   return () => {
    filePreviews.forEach((filePreview) => URL.revokeObjectURL(filePreview));
@@ -159,45 +155,27 @@ const CreateProductForm = () => {
    <Text fontSize="2xl" mb={4}>
     Create your Product
    </Text>
-   <Box mx="auto" m={5} p={5} borderWidth={1} borderRadius="lg">
+   <Box mx="auto" m={5} backgroundColor={backgroundColor} p={5} borderWidth={1} borderRadius="lg">
     <form onSubmit={handleSubmit}>
      <VStack spacing={4}>
       <Stack w="full" direction={{ base: 'column', md: 'row' }} spacing={4} alignItems="center">
        {/* Product Name */}
        <FormControl isRequired>
         <FormLabel fontSize={11}>Name of Product</FormLabel>
-        <Input
-         type="text"
-         name="name"
-         placeholder="Enter product name"
-         value={productFormData.name}
-         onChange={handleChange}
-        />
+        <Input type="text" name="name" placeholder="Enter product name" value={productFormData.name} onChange={handleChange} />
        </FormControl>
        {/* Price */}
        <FormControl isRequired>
         <FormLabel fontSize={11}>Price/kg/</FormLabel>
         <NumberInput min={1} step={0.01}>
-         <NumberInputField
-          name="price"
-          placeholder="Product price"
-          value={productFormData.price}
-          onChange={handleChange}
-         />
+         <NumberInputField name="price" placeholder="Product price" value={productFormData.price} onChange={handleChange} />
         </NumberInput>
        </FormControl>
       </Stack>
       {/* Description */}
       <FormControl isRequired>
        <FormLabel fontSize={11}>Description</FormLabel>
-       <Textarea
-        name="description"
-        placeholder="Product description"
-        value={productFormData.description}
-        rows={8}
-        maxLength={1000}
-        onChange={handleChange}
-       />
+       <Textarea name="description" placeholder="Product description" value={productFormData.description} rows={8} maxLength={1000} onChange={handleChange} />
        <Text color={'gray.500'} fontSize={12}>
         {productFormData.description.length}/{1000}
        </Text>
@@ -206,12 +184,7 @@ const CreateProductForm = () => {
        {/* Category */}
        <FormControl>
         <FormLabel fontSize={11}>Category</FormLabel>
-        <Select
-         placeholder="Select category"
-         name="category"
-         value={productFormData.category}
-         onChange={handleChange}
-        >
+        <Select placeholder="Select category" name="category" value={productFormData.category} onChange={handleChange}>
          {categories.map((cat) => (
           <option key={cat} value={cat}>
            {cat}
@@ -223,50 +196,26 @@ const CreateProductForm = () => {
        {/* Quantity */}
        <FormControl>
         <FormLabel fontSize="11px">Quantity/kg/tons</FormLabel>
-        <Input
-         name="quantity"
-         placeholder="Quantity in stock"
-         value={productFormData.quantity}
-         onChange={handleChange}
-        />
+        <Input name="quantity" placeholder="Quantity in stock" value={productFormData.quantity} onChange={handleChange} />
        </FormControl>
       </Stack>
       <Stack w="full" direction={{ base: 'column', md: 'row' }} spacing={4} alignItems="center">
        <FormControl>
         <FormLabel fontSize={11}>Address (City,Street)</FormLabel>
-        <Input
-         type="text"
-         name="address"
-         placeholder="Enter address City, Street"
-         value={productFormData.address}
-         onChange={handleChange}
-        />
+        <Input type="text" name="address" placeholder="Enter address City, Street" value={productFormData.address} onChange={handleChange} />
        </FormControl>
 
        {/* telephone */}
        <Box>
         <FormLabel fontSize={11}>Telephone Number</FormLabel>
-        <PhoneInput
-         isRequired
-         className="telephone"
-         country={'kg'}
-         name="telephone"
-         value={productFormData.telephone}
-         onChange={handleChange}
-        />
+        <PhoneInput isRequired className="telephone" country={'kg'} name="telephone" value={productFormData.telephone} onChange={handleChange} />
        </Box>
       </Stack>
       <Stack w="full" direction={{ base: 'column', md: 'row' }} spacing={4} alignItems="center">
        {/* Minimum Order */}
        <FormControl>
         <FormLabel fontSize={11}>Minimum Order</FormLabel>
-        <Select
-         type="text"
-         name="minOrder"
-         placeholder="Minimum Order"
-         value={productFormData.minOrder}
-         onChange={handleChange}
-        >
+        <Select type="text" name="minOrder" placeholder="Minimum Order" value={productFormData.minOrder} onChange={handleChange}>
          <option> 10 kg</option>
          <option> 100 kg</option>
          <option> Negotiable </option>
@@ -274,7 +223,7 @@ const CreateProductForm = () => {
        </FormControl>
        {/* Product Photo */}
        <FormControl>
-        <FormLabel fontSize={11}>Photo Image</FormLabel>
+        <FormLabel fontSize={11}>Photo Image / max 10 images</FormLabel>
         <Input type="file" name="photos" multiple accept="image/*" onChange={handleFilesChange} />
        </FormControl>
       </Stack>
@@ -307,12 +256,7 @@ const CreateProductForm = () => {
         </AccordionPanel>
        </AccordionItem>
       </Accordion>
-      <Button
-       type="submit"
-       bgGradient="linear(to-r, teal.400, teal.500, teal.600)"
-       width="full"
-       isLoading={productLoading}
-      >
+      <Button type="submit" bgGradient="linear(to-r, teal.400, teal.500, teal.600)" width="full" isLoading={productLoading}>
        Submit
       </Button>
      </VStack>
@@ -321,15 +265,7 @@ const CreateProductForm = () => {
      {filePreviews.length > 0 &&
       filePreviews.map((filePreview, index) => (
        <Box key={index}>
-        <Image
-         src={filePreview}
-         alt={`Preview of ${files[index]?.name}`}
-         boxSize="100px"
-         objectFit="cover"
-         mt={2}
-         border="1px solid #ccc"
-         borderRadius="md"
-        />
+        <Image src={filePreview} alt={`Preview of ${files[index]?.name}`} boxSize="100px" objectFit="cover" mt={2} border="1px solid #ccc" borderRadius="md" />
        </Box>
       ))}
     </Flex>

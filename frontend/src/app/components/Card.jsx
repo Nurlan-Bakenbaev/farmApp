@@ -1,25 +1,7 @@
-import React, { useState } from 'react';
-import {
- Box,
- Image,
- Text,
- Flex,
- Avatar,
- Badge,
- IconButton,
- HStack,
- VStack,
- useDisclosure,
- useToast,
- Button
-} from '@chakra-ui/react';
+import React, { useState, useEffect } from 'react';
+import { Box, Image, Text, Flex, Avatar, Badge, IconButton, HStack, VStack, useDisclosure, useToast, Button } from '@chakra-ui/react';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
-import {
- MdOutlineDelete,
- MdCategory,
- MdAttachMoney,
- MdProductionQuantityLimits
-} from 'react-icons/md';
+import { MdOutlineDelete, MdCategory, MdAttachMoney, MdProductionQuantityLimits } from 'react-icons/md';
 import { FaTruck, FaLeaf, FaWarehouse, FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteProduct } from '../redux/features/productSlice';
@@ -33,25 +15,11 @@ const CardComponent = ({ productData }) => {
  const dispatch = useDispatch();
  const toast = useToast();
 
- const {
-  _id,
-  price,
-  minOrder,
-  user: userId,
-  username,
-  category,
-  quantity,
-  bio,
-  name,
-  images,
-  delivery,
-  address,
-  createdAt
- } = productData;
+ const { _id, price, minOrder, user: userId, username, category, quantity, bio, name, images, delivery, address, createdAt } = productData;
 
  const { user } = useSelector((state) => state.user);
  const [liked, setLiked] = useState(false);
-
+ console.log(user);
  // Handle product deletion
  const handleDelete = async () => {
   try {
@@ -81,19 +49,22 @@ const CardComponent = ({ productData }) => {
    setLiked(!liked);
   } catch (error) {
    toast({
-      title: `Please Login! `,
-      description: 'Only authenticated users can save products!',
-      status: 'error',
-      duration: 3000
-     });
-  
+    title: `Please Login! `,
+    description: 'Only authenticated users can save products!',
+    status: 'error',
+    duration: 3000
+   });
   }
  };
 
  if (!productData) {
   return <Loading />;
  }
-
+ useEffect(() => {
+  if (user.likedProducts.includes(_id)) {
+   setLiked(true);
+  }
+ }, [_id]);
  return (
   <Box
    maxW={{ base: '100%', sm: '260px' }}
@@ -204,22 +175,11 @@ const CardComponent = ({ productData }) => {
      </Link>
     </VStack>
 
-    <Button
-     mt={4}
-     colorScheme="teal"
-     width="full"
-     onClick={() => (window.location.href = `/single-product/${_id}`)}
-    >
+    <Button mt={4} colorScheme="teal" width="full" onClick={() => (window.location.href = `/single-product/${_id}`)}>
      View Details
     </Button>
    </Box>
-   <ModalWindow
-    isOpen={isOpen}
-    onClose={onClose}
-    id={_id}
-    handleDelete={handleDelete}
-    itemName={name}
-   />
+   <ModalWindow isOpen={isOpen} onClose={onClose} id={_id} handleDelete={handleDelete} itemName={name} />
   </Box>
  );
 };

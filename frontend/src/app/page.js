@@ -4,13 +4,13 @@ import CardComponent from './components/Card.jsx';
 import { Box, Button, Flex, Heading, Image, Text, VStack } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts, resetProductState } from './redux/features/productSlice';
-
 import Link from 'next/link';
 import Loading from './components/Loading.jsx';
 
 const HomePage = () => {
- const { products, loading, success, error } = useSelector((state) => state.product);
  const dispatch = useDispatch();
+ const { products, loading, error } = useSelector((state) => state.product);
+
  useEffect(() => {
   dispatch(getAllProducts());
   return () => {
@@ -18,9 +18,12 @@ const HomePage = () => {
   };
  }, [dispatch]);
 
+ // Render loading state
  if (loading && navigator.onLine) {
   return <Loading />;
  }
+
+ // Render error state
  if (error) {
   return (
    <Flex justify="center" align="center" h="100vh">
@@ -33,57 +36,34 @@ const HomePage = () => {
 
  return (
   <Box>
-   {products.length > 0 && (
-    <Text fontSize="2xl" mb={4}>
-     New Advertisements
-    </Text>
-   )}
-   <Flex justifyContent={{ base: 'center', md: 'space-between' }} wrap={"wrap"}  gap={3}>
-    {products.length > 0 ? (
-     products?.map((data, idx) => <CardComponent key={idx} productData={data} />)
-    ) : (
-     <Flex
-      wrap={'wrap'}
-      justifyContent={'center'}
-      direction={{ base: 'col', sm: 'row' }}
-      alignItems={'center'}
-     >
-      <VStack align="center" justify="center">
-       <Heading
-        display="inline-block"
-        as="h1"
-        size="2xl"
-        bgGradient="linear(to-r, teal.400, teal.600)"
-        backgroundClip="text"
-       >
-        No Data Found!
-       </Heading>
-       <Link href="/create">
-        <Button
-         colorScheme="teal"
-         bgGradient="linear(to-r, teal.400, teal.500, teal.600)"
-         color="white"
-         variant="solid"
-        >
-         A new Advertisement
-        </Button>
-       </Link>
-      </VStack>
-
-      <Box className="image-container">
-       <Image
-        className="img"
-        src="/empty.png"
-        alt="No-Data"
-        width={{ base: '280px', md: '320px' }}
-        height={{ base: '280px', md: '320px' }}
-        objectFit="fit"
-       />
-      </Box>
+   {products.length > 0 ? (
+    <>
+     <Text fontSize="2xl" mb={4}>
+      New Advertisements
+     </Text>
+     <Flex justifyContent={{ base: 'center', md: 'space-between' }} wrap="wrap" gap={3}>
+      {products.map((data, idx) => (
+       <CardComponent key={idx} productData={data} />
+      ))}
      </Flex>
-    )}
-   </Flex>
+    </>
+   ) : (
+    <Flex justify="center" align="center" h="100vh" direction="column">
+     <VStack spacing={4}>
+      <Heading as="h1" size="2xl" bgGradient="linear(to-r, teal.400, teal.600)" backgroundClip="text">
+       No Advertisements Available
+      </Heading>
+      <Link href="/create">
+       <Button colorScheme="teal" bgGradient="linear(to-r, teal.400, teal.500, teal.600)" color="white" variant="solid">
+        Create a New Advertisement
+       </Button>
+      </Link>
+     </VStack>
+     <Image src="/empty.png" alt="No Data" width={{ base: '280px', md: '320px' }} height={{ base: '280px', md: '320px' }} objectFit="cover" mt={4} />
+    </Flex>
+   )}
   </Box>
  );
 };
+
 export default HomePage;
