@@ -14,7 +14,7 @@
 	</table>
 </div>
 
-<h1> EcoFarm - Your Marketplace for Fresh Goods</h1>
+<h1 align="center"> EcoFarm - Your Marketplace for Fresh Goods</h1>
 Welcome to **EcoFarm**, a vibrant online marketplace dedicated to connecting farmers with consumers who value fresh, locally-sourced products. Dive into a world where quality meets convenience, and discover the joy of supporting local agriculture!
 
 
