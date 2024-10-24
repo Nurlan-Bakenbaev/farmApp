@@ -1,6 +1,6 @@
 
 <div align="center">
-	<table> # 🌱 EcoFarm - Your Marketplace for Fresh Goods
+	<table> # <h1> EcoFarm - Your Marketplace for Fresh Goods</h1>
 		<tr>
 			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/190887639-d0ba4ec9-ddbe-45dd-bea1-4db83846503e.png" alt="Chakra UI" title="Chakra UI"/></code></td>
 			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/117447155-6a868a00-af3d-11eb-9cfe-245df15c9f3f.png" alt="JavaScript" title="JavaScript"/></code></td>
