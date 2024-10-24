@@ -80,7 +80,7 @@ const SearchInput = () => {
      <ModalBody>
       {loading ? (
        <Spinner size="lg" />
-      ) : results.length > 0 ? (
+      ) : results?.length > 0 ? (
        <ul>
         {results.map((product) => (
          <Link href={`/single-product/${product._id}`} key={product._id}>
