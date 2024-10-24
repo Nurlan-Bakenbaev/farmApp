@@ -15,7 +15,7 @@ import { MdOutlineWarningAmber } from 'react-icons/md';
 
 const ModalWindow = ({ isOpen, onClose, handleDelete, id, itemName }) => {
  return (
-  <Modal isOpen={isOpen} onClose={onClose}>
+  <Modal size={{ base: 'xs', md: 'lg' }} isOpen={isOpen} onClose={onClose}>
    <ModalOverlay />
    <ModalContent textAlign={'center'}>
     <ModalHeader color={'red'} fontWeight={'bold'}>

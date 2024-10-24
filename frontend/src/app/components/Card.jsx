@@ -77,25 +77,17 @@ const CardComponent = ({ productData }) => {
 
  // Handle product like/unlike
  const handleLike = async (currentUser, productId) => {
- if(!currentUser){
-    toast({
-        title: `Please Login! `,
-        description: "User is not logged in",
-        status: 'error',
-        duration: 3000
-       });
- }
-    try {
-
+  try {
    await dispatch(likeProduct({ currentUser, productId })).unwrap();
    setLiked(!liked);
   } catch (error) {
    toast({
-    title: `Error liking/unliking ${name}`,
-    description: error.message,
-    status: 'error',
-    duration: 5000
-   });
+      title: `Please Login! `,
+      description: 'User is not logged in',
+      status: 'error',
+      duration: 3000
+     });
+  
   }
  };
 
@@ -137,9 +129,9 @@ const CardComponent = ({ productData }) => {
        right="10px"
        size="md"
        onClick={onOpen}
-       bg="rgba(255, 0, 0, 0.5)" // Semi-transparent red background
+       bg="rgba(255, 0, 0, 0.5)"
        color="white"
-       _hover={{ bg: 'rgba(255, 0, 0, 0.7)' }} // Darker on hover
+       _hover={{ bg: 'rgba(255, 0, 0, 0.7)' }}
        borderRadius="md"
        variant="solid"
       />
@@ -151,10 +143,10 @@ const CardComponent = ({ productData }) => {
       top="10px"
       right="50px"
       size="md"
-      onClick={() => handleLike(user.user._id, _id)}
-      bg="rgba(0, 128, 0, 0.5)" // Semi-transparent green background
+      onClick={() => handleLike(user?.user?._id, _id)}
+      bg="rgba(0, 128, 0, 0.5)"
       color="white"
-      _hover={{ bg: 'rgba(0, 128, 0, 0.7)' }} // Darker on hover
+      _hover={{ bg: 'rgba(0, 128, 0, 0.7)' }}
       borderRadius="md"
       variant="solid"
      />
