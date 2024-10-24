@@ -96,7 +96,9 @@ const Navbar = () => {
        </MenuItem>
        <MenuItem onClick={toggleColorMode}>Toggle Mode</MenuItem>
        <MenuItem>
-        <Link href="/">ECO-FARM</Link>
+        <Link href="/signup">
+          Signup
+        </Link>
        </MenuItem>
       </MenuList>
      </Menu>
