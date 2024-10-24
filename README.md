@@ -1,5 +1,6 @@
+
 <div align="center">
-	<table>
+	<table> # 🌱 EcoFarm - Your Marketplace for Fresh Goods
 		<tr>
 			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/190887639-d0ba4ec9-ddbe-45dd-bea1-4db83846503e.png" alt="Chakra UI" title="Chakra UI"/></code></td>
 			<td><code><img width="50" src="https://user-images.githubusercontent.com/25181517/117447155-6a868a00-af3d-11eb-9cfe-245df15c9f3f.png" alt="JavaScript" title="JavaScript"/></code></td>
@@ -13,17 +14,11 @@
 	</table>
 </div>
 
-# 🌱 EcoFarm - Your Marketplace for Fresh Goods
+
 
 Welcome to **EcoFarm**, a vibrant online marketplace dedicated to connecting farmers with consumers who value fresh, locally-sourced products. Dive into a world where quality meets convenience, and discover the joy of supporting local agriculture!
 
-## 🌟 Table of Contents
-- [Features](#features)
-- [Technologies Used](#technologies-used)
-- [Getting Started](#getting-started)
-- [How to Use EcoFarm](#how-to-use-ecofarm)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## 🌟 Features
 - **User-Friendly Authentication**: Secure login and registration using JWT tokens and bcrypt.
