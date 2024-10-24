@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // Define your base URL for the API
-const API_BASE_URL = 'https://farm-7067dausg-kyrgyztruthgmailcoms-projects.vercel.app';
+const API_BASE_URL = 'https://farmapp-1.onrender.com';
 
 // Thunk for Sign Up
 export const postUser = createAsyncThunk('user/postUser', async (formData, { rejectWithValue }) => {
@@ -32,10 +32,12 @@ export const loginUser = createAsyncThunk('user/login', async (userData, { rejec
 // Thunk for Liking/Unliking a Product
 export const likeProduct = createAsyncThunk(
  'user/likeProduct',
- async ({ userId, productId }, { rejectWithValue }) => {
+ async ({ currentUser, productId }, { rejectWithValue }) => {
   try {
+  console.log(currentUser, productId);
+
    const res = await axios.patch(
-    `${API_BASE_URL}/user/${userId}/like/${productId}`,
+    `${API_BASE_URL}/user/${currentUser}/like/${productId}`,
     {},
     {
      headers: { 'Content-Type': 'application/json' },

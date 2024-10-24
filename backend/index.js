@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 const allowedOrigins = [
   "http://localhost:3000",
-  "",
+  "https://farmapp-1.onrender.com",
 ];
 
 app.use(
@@ -39,7 +39,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static files from the uploads directory
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
 
 app.use("/user", userRouter);
 app.use("/api", productRouter);

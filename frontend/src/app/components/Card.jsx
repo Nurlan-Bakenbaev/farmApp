@@ -38,7 +38,6 @@ import { likeProduct } from '../redux/features/userSlice';
 
 const CardComponent = ({ productData }) => {
  const { isOpen, onOpen, onClose } = useDisclosure();
- const { user } = useSelector((state) => state.user);
  const dispatch = useDispatch();
  const toast = useToast();
  const {
@@ -56,6 +55,9 @@ const CardComponent = ({ productData }) => {
   address,
   createdAt
  } = productData;
+ const { user, loading, error } = useSelector((state) => state.user);
+ console.log(user);
+
  const isLiked = user?.likedProducts?.some((product) => product._id === _id);
  const [liked, setLiked] = useState(isLiked);
  const handleDelete = async () => {
@@ -79,8 +81,9 @@ const CardComponent = ({ productData }) => {
    });
   }
  };
- console.log(user);
  const handleLike = async (userId, productId) => {
+  console.log(userId, productId);
+
   try {
    setLiked(!liked);
    await dispatch(likeProduct({ userId, productId })).unwrap();
@@ -93,7 +96,7 @@ const CardComponent = ({ productData }) => {
    });
   }
  };
- if (!productData) {
+ if (!productData || !user) {
   return <Loading />;
  }
  return (
@@ -108,7 +111,7 @@ const CardComponent = ({ productData }) => {
   >
    <Box position="relative">
     <Image
-     src={images && `http://localhost:8000/uploads/${images[0].split('/').pop()}`}
+     src={images && `https://farmapp-1.onrender.com/uploads/${images[0].split('/').pop()}`}
      alt={name}
      fallbackSrc="/default-image.jpg"
      boxSize="300px"
@@ -140,7 +143,7 @@ const CardComponent = ({ productData }) => {
       top="10px"
       right="50px"
       size="md"
-      onClick={() => handleLike(user._id, _id)}
+      onClick={() => handleLike(user.user._id, _id)}
       variant="solid"
       colorScheme={liked ? 'green' : 'gray'}
      />

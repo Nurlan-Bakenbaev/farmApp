@@ -97,7 +97,7 @@ const SingleProductPage = () => {
      <Slider {...settings}>
       {product.images.map((file, index) => (
        <Image
-        src={`http://localhost:8000/uploads/${file.split('/').pop()}`}
+        src={`https://farmapp-1.onrender.com/uploads/${file.split('/').pop()}`}
         key={index}
         alt={`Product image ${index + 1}`}
         borderRadius="md"

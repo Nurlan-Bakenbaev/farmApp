@@ -11,7 +11,7 @@ const ProductOwnerPage = () => {
  const { id } = useParams();
  const getUserOwner = async () => {
   try {
-   const res = await axios.get(`http://localhost:8000/user/owner/${id}`);
+   const res = await axios.get(`https://farmapp-1.onrender.com/user/owner/${id}`);
    console.log(res.data.user);
    setUser(res.data.user);
   } catch (error) {
@@ -40,7 +40,7 @@ const ProductOwnerPage = () => {
        maxW="250px"
        maxH="250px"
        mb={4}
-       src={`http://localhost:8000/uploads/${user.photo.split('/').pop()}`}
+       src={`https://farmapp-1.onrender.com/uploads/${user.photo.split('/').pop()}`}
        alt={user.name}
       />
      )}

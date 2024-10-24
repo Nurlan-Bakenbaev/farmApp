@@ -29,7 +29,6 @@ const Navbar = () => {
  const { colorMode, toggleColorMode } = useColorMode();
  const dispatch = useDispatch();
  const { user, loading, error } = useSelector((state) => state.user);
-console.log(user)
  useEffect(() => {
   const storedUser = localStorage.getItem('user');
   if (storedUser) {
@@ -52,7 +51,7 @@ console.log(user)
     </Box>
 
     {/* Search Bar */}
-   <SearchInput/>
+    <SearchInput />
 
     {/* Buttons and User Menu */}
     <Box display={{ base: 'none', md: 'flex' }} alignItems={'center'} gap={3}>

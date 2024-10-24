@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// creating a product
+const API_BASE_URL = 'https://farmapp-1.onrender.com';
+
 export const createProduct = createAsyncThunk(
  'product/createProduct',
  async (productData, { rejectWithValue }) => {
   try {
-   const res = await axios.post('http://localhost:8000/api/product', productData, {
+   const res = await axios.post(`${API_BASE_URL}/api/product`, productData, {
     withCredentials: true
    });
    return res.data;
@@ -16,11 +17,9 @@ export const createProduct = createAsyncThunk(
  }
 );
 
-// getting all products
 export const getAllProducts = createAsyncThunk(
  'product/getAllProducts',
  async (_, { getState, rejectWithValue }) => {
-  //  caching
   const state = getState();
 
   if (state.product.cached) {
@@ -28,7 +27,7 @@ export const getAllProducts = createAsyncThunk(
   }
 
   try {
-   const res = await axios.get('http://localhost:8000/api/product', { withCredentials: true });
+   const res = await axios.get(`${API_BASE_URL}/api/product`, { withCredentials: true });
    return res.data.products;
   } catch (error) {
    return rejectWithValue(error.response.data);
@@ -36,12 +35,11 @@ export const getAllProducts = createAsyncThunk(
  }
 );
 
-// deleting a product
 export const deleteProduct = createAsyncThunk(
  'product/deleteProduct',
  async (productId, { rejectWithValue }) => {
   try {
-   await axios.delete(`http://localhost:8000/api/product/${productId}`, { withCredentials: true });
+   await axios.delete(`${API_BASE_URL}/api/product/${productId}`, { withCredentials: true });
    return productId;
   } catch (error) {
    return rejectWithValue(error.response.data);
@@ -49,12 +47,11 @@ export const deleteProduct = createAsyncThunk(
  }
 );
 
-// getting one product
 export const getOneProduct = createAsyncThunk(
  'product/getOneProduct',
  async (productId, { rejectWithValue }) => {
   try {
-   const res = await axios.get(`http://localhost:8000/api/product/${productId}`, {
+   const res = await axios.get(`${API_BASE_URL}/api/product/${productId}`, {
     withCredentials: true
    });
    return res.data.product;
@@ -64,7 +61,6 @@ export const getOneProduct = createAsyncThunk(
  }
 );
 
-// Initial state
 const initialState = {
  products: [],
  loading: false,
@@ -73,7 +69,6 @@ const initialState = {
  cached: false
 };
 
-// Product slice
 const productSlice = createSlice({
  name: 'product',
  initialState,
@@ -88,7 +83,7 @@ const productSlice = createSlice({
  },
  extraReducers: (builder) => {
   builder
-   // Handle create product
+
    .addCase(createProduct.pending, (state) => {
     state.loading = true;
     state.success = false;
@@ -106,7 +101,6 @@ const productSlice = createSlice({
     state.error = action.payload || 'Failed to create product';
    })
 
-   // Handle get all products
    .addCase(getAllProducts.pending, (state) => {
     state.loading = true;
     state.success = false;
@@ -125,7 +119,6 @@ const productSlice = createSlice({
     state.error = action.payload || 'Failed to fetch products';
    })
 
-   // Handle delete product
    .addCase(deleteProduct.pending, (state) => {
     state.loading = true;
     state.success = false;
@@ -134,7 +127,7 @@ const productSlice = createSlice({
    .addCase(deleteProduct.fulfilled, (state, action) => {
     state.loading = false;
     state.success = true;
-    state.products = state.products.filter((product) => product._id !== action.payload); // Remove the deleted product
+    state.products = state.products.filter((product) => product._id !== action.payload);
     state.error = null;
    })
    .addCase(deleteProduct.rejected, (state, action) => {
@@ -161,6 +154,5 @@ const productSlice = createSlice({
  }
 });
 
-// Export actions and reducer
 export const { resetProductState } = productSlice.actions;
 export default productSlice.reducer;
