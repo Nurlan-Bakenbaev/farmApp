@@ -83,7 +83,7 @@ const CardComponent = ({ productData }) => {
   } catch (error) {
    toast({
       title: `Please Login! `,
-      description: 'Only authenticated users can create products',
+      description: 'Only authenticated users can create products!',
       status: 'error',
       duration: 3000
      });
