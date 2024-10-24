@@ -21,7 +21,9 @@ const CurrentUserPage = () => {
   <Box p={5} borderRadius="lg">
    <VStack spacing={4} align="start">
     <Heading as="h1" size="xl" color="teal.500">
-     {user.user.name}'s Profile
+     <Heading as="h1" size="xl" color="teal.500">
+      {user.user.name}&apos;s Profile
+     </Heading>
     </Heading>
     <HStack spacing={4}>
      <Avatar
