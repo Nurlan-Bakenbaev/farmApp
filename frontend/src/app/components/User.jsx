@@ -1,4 +1,5 @@
-'use client';
+"use client"
+
 import { Avatar, Button, Flex, Wrap, WrapItem, Text, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import { IoIosLogOut } from 'react-icons/io';
@@ -8,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const User = () => {
  const dispatch = useDispatch();
- const { user } = useSelector((state) => state.user.user);
+ const { user } = useSelector((state) => state.user)
  const handleLogout = () => {
   dispatch(logout());
   localStorage.removeItem('token');
@@ -27,9 +28,9 @@ const User = () => {
      }}
     >
      <Avatar
-      title={user?.name}
+      title={user?.user?.name}
       size="lg"
-      src={`https://farmapp-1.onrender.com/uploads/${user?.photo?.split('/').pop()}` || <MdAccountCircle />}
+      src={`https://farmapp-1.onrender.com/uploads/${user?.user?.photo.split('/').pop()}` || <MdAccountCircle />}
       fallback={<MdAccountCircle style={{ fontSize: '2em', color: 'gray.300' }} />}
       borderColor={useColorModeValue('gray.200', 'gray.700')}
       borderWidth={2}
@@ -39,7 +40,7 @@ const User = () => {
     </WrapItem>
    </Wrap>
    <Flex direction="column" align="flex-start">
-    <Text fontWeight="bold">{user?.name || 'User'}</Text>
+    <Text fontWeight="bold">{user?.user?.name || 'User'}</Text>
     <Button
      leftIcon={<IoIosLogOut />}
      colorScheme="purple"

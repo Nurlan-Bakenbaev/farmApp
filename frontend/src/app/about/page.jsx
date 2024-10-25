@@ -1,5 +1,4 @@
 import { Box, Heading, Text, VStack, Image, Divider } from '@chakra-ui/react';
-
 const About = () => {
  return (
   <Box p={8} maxW="1000px" mx="auto">

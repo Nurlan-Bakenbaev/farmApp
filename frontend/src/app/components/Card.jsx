@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import { Box, Image, Text, Flex, Avatar, Badge, IconButton, HStack, VStack, useDisclosure, useToast, Button } from '@chakra-ui/react';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
@@ -17,13 +18,13 @@ const CardComponent = ({ productData }) => {
 
  const { _id, price, minOrder, user: userId, username, category, quantity, bio, name, images, delivery, address, createdAt } = productData;
 
- const { user } = useSelector((state) => state.user);
- const [liked, setLiked] = useState(user?.user?.likedProducts?.includes(_id));
+ const { user = {} } = useSelector((state) => state.user);
+ const [liked, setLiked] = useState(user.user.likedProducts?.includes(_id));
  useEffect(() => {
-  if (user?.user?.likedProducts?.includes(_id)) {
+  if (user.user.likedProducts?.includes(_id)) {
    setLiked(true);
   }
- }, [user?.user?.likedProducts, _id]);
+ }, [user.user.likedProducts, _id]);
  const handleDelete = async () => {
   try {
    await dispatch(deleteProduct(_id)).unwrap();
@@ -45,9 +46,9 @@ const CardComponent = ({ productData }) => {
    });
   }
  };
+ console.log(user.user.likedProducts);
 
  const handleLike = async (currentUser, productId) => {
-  console.log(currentUser, productId);
   try {
    await dispatch(likeProduct({ currentUser, productId })).unwrap();
    setLiked(!liked);
@@ -109,9 +110,9 @@ const CardComponent = ({ productData }) => {
       />
      )}
      <IconButton
-      display={userId === user.user._id ? 'none' : 'flex'}
+      display={userId === user?.user?._id ? 'none' : 'flex'}
       aria-label="Like product"
-      icon={!liked ? <FcLike /> : <FcLikePlaceholder />}
+      icon={liked ? <FcLike /> : <FcLikePlaceholder />}
       position="absolute"
       top="10px"
       right="50px"

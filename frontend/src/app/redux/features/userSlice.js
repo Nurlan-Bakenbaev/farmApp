@@ -34,7 +34,6 @@ export const loginUser = createAsyncThunk('user/login', async (userData, { rejec
 // Thunk for Liking/Unliking a Product
 export const likeProduct = createAsyncThunk('user/likeProduct', async ({ currentUser: userId, productId }, { rejectWithValue }) => {
  try {
-  console.log(userId, productId);
   const res = await axios.patch(
    `${API_BASE_URL}/user/${userId}/like/${productId}`,
    {},
@@ -62,6 +61,10 @@ const userSlice = createSlice({
   error: null
  },
  reducers: {
+  setUser: (state, action) => {
+   state.user = action.payload;
+   localStorage.setItem('user', JSON.stringify(action.payload));
+  },
   setUserFromStorage: (state, action) => {
    state.user = action.payload;
   },
@@ -75,54 +78,49 @@ const userSlice = createSlice({
   }
  },
  extraReducers: (builder) => {
-  // SIGN UP
   builder
+   // SIGN UP
    .addCase(postUser.pending, (state) => {
     state.loading = true;
     state.error = null;
    })
    .addCase(postUser.fulfilled, (state, action) => {
     state.loading = false;
-    state.user = action.payload; // Ensure the user payload has likedProducts
     state.error = null;
-    localStorage.setItem('user', JSON.stringify(action.payload));
+    userSlice.caseReducers.setUser(state, action); // Calls setUser
    })
    .addCase(postUser.rejected, (state, action) => {
     state.loading = false;
     state.error = action.payload;
-   });
+   })
 
-  // LOGIN
-  builder
+   // LOGIN
    .addCase(loginUser.pending, (state) => {
     state.loading = true;
     state.error = null;
    })
    .addCase(loginUser.fulfilled, (state, action) => {
     state.loading = false;
-    state.user = action.payload; // Ensure the user payload has likedProducts
     state.error = null;
-    localStorage.setItem('user', JSON.stringify(action.payload));
+    userSlice.caseReducers.setUser(state, action); // Calls setUser
    })
    .addCase(loginUser.rejected, (state, action) => {
     state.loading = false;
     state.error = action.payload || 'Failed to log in';
-   });
+   })
 
-  // LIKE/UNLIKE PRODUCT
-  builder
+   // LIKE/UNLIKE PRODUCT
    .addCase(likeProduct.pending, (state) => {
     state.loading = true;
     state.error = null;
    })
    .addCase(likeProduct.fulfilled, (state, action) => {
     state.loading = false;
-
-    // Assuming action.payload contains the updated user data including likedProducts
-    state.user = { ...state.user, likedProducts: action.payload.likedProducts };
-
     state.error = null;
-    localStorage.setItem('user', JSON.stringify(state.user));
+
+    // Assuming action.payload contains the updated likedProducts
+    state.user = { ...state.user, likedProducts: action.payload.likedProducts };
+    userSlice.caseReducers.setUser(state, { payload: state.user }); // Calls setUser
    })
    .addCase(likeProduct.rejected, (state, action) => {
     state.loading = false;
@@ -131,5 +129,5 @@ const userSlice = createSlice({
  }
 });
 
-export const { logout, setUserFromStorage } = userSlice.actions;
+export const { logout, setUserFromStorage, setUser } = userSlice.actions;
 export default userSlice.reducer;

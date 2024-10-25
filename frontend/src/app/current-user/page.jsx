@@ -5,40 +5,41 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../components/Loading';
 import CardComponent from '../components/Card';
 import { FaUser, FaEnvelope, FaCalendarAlt } from 'react-icons/fa';
+import { PhoneIcon } from '@chakra-ui/icons';
 
 const CurrentUserPage = () => {
- const { user, loading, error } = useSelector((state) => state.user);
+ const { user = {}, loading, error } = useSelector((state) => state.user);
 
- if (loading) {
+ if (loading || !user.user) {
   return <Loading />;
- }
-
- if (!user) {
-  return <Text align={'center'}>No user information available.</Text>;
  }
 
  return (
   <Box p={5} borderRadius="lg">
    <VStack spacing={4} align="start">
     <Heading as="h1" size="xl" color="teal.500">
-     {user?.name}&apos;s Profile
+     {`${user.user.name || 'User'}'s Products`}
     </Heading>
 
     <HStack spacing={4}>
      <Avatar
-      name={user?.name}
-      src={user?.photo ? `https://farmapp-1.onrender.com/uploads/${user?.photo.split('/').pop()}` : '/default-avatar.jpg'}
+      name={user.user.name || 'User'}
+      src={user.user.photo ? `https://farmapp-1.onrender.com/uploads/${user.user.photo.split('/').pop()}` : '/default-avatar.jpg'}
       size="lg"
       boxShadow="md"
      />
      <VStack align="start">
       <HStack>
        <Icon as={FaEnvelope} boxSize={5} color="gray.500" />
-       <Text fontSize="lg">{user?.email}</Text>
+       <Text fontSize="lg">{user.user.email || 'No email available'}</Text>
+      </HStack>
+      <HStack>
+       <Icon as={PhoneIcon} boxSize={5} color="gray.500" />
+       <Text fontSize="lg">{` +${user.user?.products[0]?.telephone}` || 'No email available'}</Text>
       </HStack>
       <HStack>
        <Icon as={FaCalendarAlt} boxSize={5} color="gray.500" />
-       <Text fontSize="lg">Created: {new Date(user?.createdAt).toLocaleDateString()}</Text>
+       <Text fontSize="lg">Created: {user.user.createdAt ? new Date(user.user.createdAt).toLocaleDateString() : 'N/A'}</Text>
       </HStack>
      </VStack>
     </HStack>
@@ -46,19 +47,16 @@ const CurrentUserPage = () => {
     <Heading as="h2" size="lg" mt={6} color="teal.400">
      My Products
     </Heading>
-    {user.products && user?.products?.length === 0 ? (
+    {user.products && user.products.length === 0 ? (
      <Text>User has not created any Products yet</Text>
     ) : (
      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5}>
-      {user.products && user?.products?.map((product) => (
+      {user.user.products.map((product) => (
        <CardComponent key={product._id} productData={product} />
       ))}
      </SimpleGrid>
     )}
    </VStack>
-   <Button mt={5} colorScheme="teal" size="lg" onClick={() => console.log('Edit Profile Clicked')}>
-    Edit Profile
-   </Button>
   </Box>
  );
 };

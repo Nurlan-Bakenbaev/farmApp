@@ -12,15 +12,14 @@ const Navbar = () => {
  const { colorMode, toggleColorMode } = useColorMode();
  const dispatch = useDispatch();
  const { user } = useSelector((state) => state.user);
-
  useEffect(() => {
   const storedUser = localStorage.getItem('user');
   if (storedUser) {
    dispatch(setUserFromStorage(JSON.parse(storedUser)));
   }
  }, [dispatch]);
- const likedProducts = useSelector((state) => state.user.user.likedProducts.length);
-
+ const likedProducts = useSelector((state) => state.user.user.likedProducts?.length);
+ console.log(likedProducts);
  return (
   <Container maxW={'100%'} bg={useColorModeValue('gray.100', 'gray.900')} py={4}>
    <Flex mx="auto" h={'80px'} alignItems={'center'} justifyContent={'space-between'}>
@@ -60,7 +59,7 @@ const Navbar = () => {
      >
       {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
      </Button>
-     {user ? (
+     {user.id === null || user ? (
       <Link position={'absolute'} href={'/current-user'}>
        <User />
        <Text
@@ -96,9 +95,7 @@ const Navbar = () => {
        </MenuItem>
        <MenuItem onClick={toggleColorMode}>Toggle Mode</MenuItem>
        <MenuItem>
-        <Link href="/signup">
-          Signup
-        </Link>
+        <Link href="/signup">Signup</Link>
        </MenuItem>
       </MenuList>
      </Menu>

@@ -21,7 +21,7 @@ import { useRouter } from 'next/navigation';
 import { userValidator } from '../utils/passwordValidator';
 import Loading from '../components/Loading';
 
-const Login = () => {
+const SignUp = () => {
  const [userData, setUserData] = useState({
   email: '',
   password: '',
@@ -30,12 +30,12 @@ const Login = () => {
  });
  const [validationMessage, setValidationMessage] = useState('');
  const [formError, setFormError] = useState(true);
- const [formIncomplete, setFormIncomplete] = useState(false); // State for incomplete form
+ const [formIncomplete, setFormIncomplete] = useState(false);
  const { user, loading, error } = useSelector((state) => state.user);
  const dispatch = useDispatch();
  const router = useRouter();
 
- const formBg = useColorModeValue('gray.50', 'gray.900'); // Moved here
+ const formBg = useColorModeValue('gray.50', 'gray.900');
 
  const handleChange = (e) => {
   const { name, value, type, files } = e.target;
@@ -49,8 +49,6 @@ const Login = () => {
 
  const handleLogin = (e) => {
   e.preventDefault();
-
-  // Check if all fields are filled
   if (!userData.name || !userData.email || !userData.password) {
    setFormIncomplete(true);
    return;
@@ -73,13 +71,8 @@ const Login = () => {
   setValidationMessage('');
   dispatch(postUser(formData));
  };
-
  if (loading) {
   return <Loading />;
- }
-
- if (user) {
-  router.push('/login');
  }
 
  return (
@@ -87,53 +80,26 @@ const Login = () => {
    <Heading as={'h2'} mb={'20px'} size={'xl'} textAlign={'center'}>
     Create an Account
    </Heading>
-   <FormControl
-    className={`sign-up-form ${error || (!formError && 'shake')}`}
-    w={'full'}
-    bg={formBg} 
-    p={6}
-    rounded={'lg'}
-    shadow={'md'}
-   >
+   <FormControl className={`sign-up-form ${error || (!formError && 'shake')}`} w={'full'} bg={formBg} p={6} rounded={'lg'} shadow={'md'}>
     <VStack padding={'10px'} spacing={4}>
      <InputGroup>
       <InputLeftElement pointerEvents="none">
        <InfoIcon color="gray.300" />
       </InputLeftElement>
-      <Input
-       placeholder="User name"
-       name="name"
-       value={userData.name}
-       onChange={handleChange}
-       isRequired
-      />
+      <Input placeholder="User name" name="name" value={userData.name} onChange={handleChange} isRequired />
      </InputGroup>
      <InputGroup>
       <InputLeftElement pointerEvents="none">
        <AtSignIcon color="gray.300" />
       </InputLeftElement>
-      <Input
-       isRequired
-       type="email"
-       placeholder="Email Address"
-       name="email"
-       value={userData.email}
-       onChange={handleChange}
-      />
+      <Input isRequired type="email" placeholder="Email Address" name="email" value={userData.email} onChange={handleChange} />
      </InputGroup>
-     {userData.email && <FormHelperText color={'red'}>{error && error.message}</FormHelperText>}
+     {userData.email && <FormHelperText color={'red'}>{error?.message}</FormHelperText>}
      <InputGroup>
       <InputLeftElement pointerEvents="none">
        <LockIcon color="gray.300" />
       </InputLeftElement>
-      <Input
-       isRequired
-       type="password"
-       placeholder="Password"
-       name="password"
-       value={userData.password}
-       onChange={handleChange}
-      />
+      <Input isRequired type="password" placeholder="Password" name="password" value={userData.password} onChange={handleChange} />
      </InputGroup>
      {!formError && <FormHelperText color={'red'}>{validationMessage}</FormHelperText>}
      {formIncomplete && <FormHelperText color={'red'}>Please fill out all fields.</FormHelperText>}
@@ -144,11 +110,7 @@ const Login = () => {
       <Input isRequired type="file" accept="image/*" name="photo" onChange={handleChange} />
      </InputGroup>
      <Flex>
-      <Button
-       isLoading={error || user ? false : loading}
-       onClick={handleLogin}
-       colorScheme="purple"
-      >
+      <Button isLoading={loading} onClick={handleLogin} colorScheme="purple">
        Sign up
       </Button>
      </Flex>
@@ -161,4 +123,4 @@ const Login = () => {
  );
 };
 
-export default Login;
+export default SignUp;
