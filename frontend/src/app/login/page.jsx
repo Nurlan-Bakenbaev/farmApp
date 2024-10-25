@@ -28,7 +28,7 @@ const Login = () => {
    });
    router.push('/');
   }
- }, [user, toast]);
+ }, [user,router, toast]);
 
  const handleKeyDown = (e) => {
   if (e.key === 'Enter') {
