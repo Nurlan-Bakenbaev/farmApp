@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { Box, Image, Text, Flex, Avatar, Badge, IconButton, HStack, VStack, useDisclosure, useToast, Button } from '@chakra-ui/react';
+import { Box, Image, Text, Flex, Avatar, Badge, IconButton, HStack, VStack, useDisclosure, useToast, Button, useColorModeValue } from '@chakra-ui/react';
 import { FcLikePlaceholder, FcLike } from 'react-icons/fc';
 import { MdOutlineDelete, MdCategory, MdAttachMoney, MdProductionQuantityLimits } from 'react-icons/md';
 import { FaTruck, FaLeaf, FaWarehouse, FaMapMarkerAlt, FaCalendarAlt } from 'react-icons/fa';
@@ -58,6 +58,7 @@ const CardComponent = ({ productData }) => {
    });
   }
  };
+ const backgroundColor = useColorModeValue('gray.100', 'gray.900');
 
  if (!productData || !user) {
   return <Loading />;
@@ -123,7 +124,7 @@ const CardComponent = ({ productData }) => {
      />
     </Flex>
    </Box>
-   <Box p="6">
+   <Box backgroundColor={backgroundColor} p="6">
     <VStack align="start" spacing={3}>
      <Text fontWeight="bold" fontSize="xl" noOfLines={1}>
       {name}
