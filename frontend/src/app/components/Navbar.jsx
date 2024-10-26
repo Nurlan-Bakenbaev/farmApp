@@ -60,7 +60,7 @@ const Navbar = () => {
      >
       {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
      </Button>
-     {user.id === null || !user ? (
+     {user.id !== null || !user ? (
       <Link position={'absolute'} href={'/current-user'}>
        <User />
        <Text

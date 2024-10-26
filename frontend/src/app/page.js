@@ -18,13 +18,9 @@ const HomePage = () => {
   };
  }, [dispatch]);
 
- // Render loading state
- if (loading && navigator.onLine) {
+ if (loading) {
   return <Loading />;
- }
-
- // Render error state
- if (error) {
+ } else if (error) {
   return (
    <Flex justify="center" align="center" h="100vh">
     <Text fontSize="xl" fontWeight="bold" color="red.500">

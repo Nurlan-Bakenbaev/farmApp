@@ -7,7 +7,7 @@ import Footer from './components/Footer.jsx';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 export const metadata = {
- title: 'Farmers Marketplace',
+ title: 'Eco-Farm Marketplace',
  description: 'This website connects farmers with buyers, offering a platform to showcase and sell their products and goods directly.',
  openGraph: {
   title: 'Eco-Farm Marketplace | Buy Direct from Local Growers',
