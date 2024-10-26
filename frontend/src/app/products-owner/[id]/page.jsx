@@ -1,5 +1,5 @@
 'use client';
-import { Box, Divider, Flex, Heading, Image, Text, VStack } from '@chakra-ui/react';
+import { Box, Divider, Flex, Heading, Image, Text, VStack, Stack, Button } from '@chakra-ui/react';
 import CardComponent from '@/app/components/Card';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -23,7 +23,7 @@ const ProductOwnerPage = () => {
     };
 
     getUserOwner();
-  }, [id]); // Only depend on 'id'
+  }, [id]);
 
   if (!user) {
     return <Loading />;
@@ -33,30 +33,34 @@ const ProductOwnerPage = () => {
     <Box p={6}>
       <VStack spacing={6}>
         <Box>
-          <Heading as="h1" size="lg">
+          <Heading as="h1" size="lg" textAlign="center" mb={4}>
             Product Owner
           </Heading>
         </Box>
         <Flex align="center" justify="center" direction="column">
           {user.photo && (
             <Image
-              borderRadius="md"
+              borderRadius="full"
               objectFit="cover"
-              maxW="250px"
-              maxH="250px"
+              boxSize="250px"
               mb={4}
               src={`https://farmapp-1.onrender.com/uploads/${user.photo.split('/').pop()}`}
               alt={user.name}
+              fallbackSrc="https://via.placeholder.com/250" // Placeholder for missing image
             />
           )}
-          <Badge color={'green'}>{user.userchecked ? 'Verified' : 'Not verified'}</Badge>
-          <Text fontSize="2xl">{user.name}</Text>
+          <Badge colorScheme={user.userchecked ? 'green' : 'red'}>{user.userchecked ? 'Verified' : 'Not Verified'}</Badge>
+          <Text fontSize="2xl" fontWeight="bold" mt={2}>
+            {user.name}
+          </Text>
           <Text fontSize="md" color="gray.500">
             {user.email}
           </Text>
-          <Text fontSize="md" color="gray.500">
-            {` Telephone : +${user.products[0]?.telephone.toString().replace(/(.{3})/g, '$1 ')}`}
-          </Text>
+          {user.products.length > 0 && (
+            <Text fontSize="md" color="gray.500">
+              {` Telephone: +${user.products[0]?.telephone.toString().replace(/(.{3})/g, '$1 ')}`}
+            </Text>
+          )}
         </Flex>
         <Divider />
         <Box w="full" mt={6}>
@@ -64,15 +68,18 @@ const ProductOwnerPage = () => {
             {`${user.name}'s Products`}
           </Heading>
           {user.products.length === 0 ? (
-            <Text>No products found.</Text>
+            <Text textAlign="center">No products found.</Text>
           ) : (
-            <Flex gap={4} wrap={'wrap'}>
+            <Flex gap={4} wrap={'wrap'} justify="center">
               {user.products.map((product) => (
                 <CardComponent key={product._id} productData={product} />
               ))}
             </Flex>
           )}
         </Box>
+        <Button colorScheme="blue" size="md" mt={4} onClick={() => window.history.back()}>
+          Go Back
+        </Button>
       </VStack>
     </Box>
   );

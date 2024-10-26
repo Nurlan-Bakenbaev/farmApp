@@ -13,7 +13,7 @@ const CurrentUserPage = () => {
  if (loading || !user.user) {
   return <Loading />;
  }
-
+console.log(user.likedProducts)
  return (
   <Box p={5} borderRadius="lg">
    <VStack spacing={4} align="start">
@@ -35,7 +35,7 @@ const CurrentUserPage = () => {
       </HStack>
       <HStack>
        <Icon as={PhoneIcon} boxSize={5} color="gray.500" />
-       <Text fontSize="lg">{` +${user.user?.products[0]?.telephone}` || 'No email available'}</Text>
+       <Text fontSize="lg">{` +${user.user?.products[0]?.telephone}` || 'No Telephone'}</Text>
       </HStack>
       <HStack>
        <Icon as={FaCalendarAlt} boxSize={5} color="gray.500" />
@@ -48,10 +48,22 @@ const CurrentUserPage = () => {
      My Products
     </Heading>
     {user.user.products ? (
-     <Text>User has not created any Products yet</Text>
+     <Text>User has not created any Products </Text>
     ) : (
      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5}>
       {user.user.products.map((product) => (
+       <CardComponent key={product._id} productData={product} />
+      ))}
+     </SimpleGrid>
+    )}
+    <Heading as="h2" size="lg" mt={6} color="teal.400">
+     My Liked Products
+    </Heading>
+    {!user.likedProducts ? (
+     <Text>User has not liked any Products</Text>
+    ) : (
+     <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5}>
+      {user.likedProducts.map((product) => (
        <CardComponent key={product._id} productData={product} />
       ))}
      </SimpleGrid>
