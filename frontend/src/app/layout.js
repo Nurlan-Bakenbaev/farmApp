@@ -13,7 +13,7 @@ export const metadata = {
   title: 'Eco-Farm Marketplace | Buy Direct from Local Growers',
   description:
    'Connect directly with local farmers to buy fresh products and support sustainable agriculture. Farmers Marketplace brings buyers and sellers together.',
-  url: 'https://github.com/Nurlan-Bakenbaev',
+  url: 'https://farm-app-lime.vercel.app/',
   images: [
    {
     url: 'https://images.unsplash.com/photo-1471193945509-9ad0617afabf?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D ',

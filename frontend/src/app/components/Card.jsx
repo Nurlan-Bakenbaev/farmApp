@@ -46,8 +46,6 @@ const CardComponent = ({ productData }) => {
    });
   }
  };
- console.log(user.user?.likedProducts);
-
  const handleLike = async (currentUser, productId) => {
   try {
    await dispatch(likeProduct({ currentUser, productId })).unwrap();
