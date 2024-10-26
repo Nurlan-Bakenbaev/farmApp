@@ -8,11 +8,11 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 export const metadata = {
  title: 'Farmers Marketplace',
- description:
-  'This website connects farmers with buyers, offering a platform to showcase and sell their products and goods directly.',
+ description: 'This website connects farmers with buyers, offering a platform to showcase and sell their products and goods directly.',
  openGraph: {
-  title: 'Eco-Farm Marketplace - Connect and Trade',
-  description: 'A platform for farmers to showcase and sell their products directly to buyers.',
+  title: 'Eco-Farm Marketplace | Buy Direct from Local Growers',
+  description:
+   'Connect directly with local farmers to buy fresh products and support sustainable agriculture. Farmers Marketplace brings buyers and sellers together.',
   url: 'https://github.com/Nurlan-Bakenbaev',
   images: [
    {
@@ -35,13 +35,7 @@ export default function RootLayout({ children }) {
     <ReduxProvider>
      <ChakraUIProviders>
       <Navbar />
-      <Box
-       px={'5%'}
-       mx="auto"
-       my={'20px'}
-       minH={'80vh'}
-       maxW={{ base: '100%', md: '90%', lg: '80%' }}
-      >
+      <Box px={'5%'} mx="auto" my={'20px'} minH={'80vh'} maxW={{ base: '100%', md: '90%', lg: '80%' }}>
        {children}
       </Box>
       <Footer />

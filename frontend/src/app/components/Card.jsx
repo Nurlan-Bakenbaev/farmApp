@@ -19,12 +19,12 @@ const CardComponent = ({ productData }) => {
  const { _id, price, minOrder, user: userId, username, category, quantity, bio, name, images, delivery, address, createdAt } = productData;
 
  const { user = {} } = useSelector((state) => state.user);
- const [liked, setLiked] = useState(user.user.likedProducts?.includes(_id));
+ const [liked, setLiked] = useState(user.user?.likedProducts?.includes(_id));
  useEffect(() => {
-  if (user.user.likedProducts?.includes(_id)) {
+  if (user.user?.likedProducts?.includes(_id)) {
    setLiked(true);
   }
- }, [user.user.likedProducts, _id]);
+ }, [user.user?.likedProducts, _id]);
  const handleDelete = async () => {
   try {
    await dispatch(deleteProduct(_id)).unwrap();
@@ -46,7 +46,7 @@ const CardComponent = ({ productData }) => {
    });
   }
  };
- console.log(user.user.likedProducts);
+ console.log(user.user?.likedProducts);
 
  const handleLike = async (currentUser, productId) => {
   try {
