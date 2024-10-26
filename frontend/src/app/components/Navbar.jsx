@@ -12,6 +12,8 @@ const Navbar = () => {
  const { colorMode, toggleColorMode } = useColorMode();
  const dispatch = useDispatch();
  const { user } = useSelector((state) => state.user);
+ console.log(user);
+
  useEffect(() => {
   const storedUser = localStorage.getItem('user');
   if (storedUser) {
@@ -19,7 +21,6 @@ const Navbar = () => {
   }
  }, [dispatch]);
  const likedProducts = useSelector((state) => state.user.user.likedProducts?.length);
- console.log(likedProducts);
  return (
   <Container maxW={'100%'} bg={useColorModeValue('gray.100', 'gray.900')} py={4}>
    <Flex mx="auto" h={'80px'} alignItems={'center'} justifyContent={'space-between'}>
@@ -59,7 +60,7 @@ const Navbar = () => {
      >
       {colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
      </Button>
-     {user.id === null || user ? (
+     {user.id === null || !user ? (
       <Link position={'absolute'} href={'/current-user'}>
        <User />
        <Text

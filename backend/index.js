@@ -18,7 +18,7 @@ const allowedOrigins = [
  'https://farm-app-frontend.vercel.app',
  'https://farm-app-lime.vercel.app',
  'https://farm-1cpj66w15-nurlan-bakenbaevs-projects.vercel.app',
- 'https://farm-app-git-main-nurlan-bakenbaevs-projects.vercel.app/'
+ 'https://farm-app-git-main-nurlan-bakenbaevs-projects.vercel.app'
 ];
 
 app.use(
