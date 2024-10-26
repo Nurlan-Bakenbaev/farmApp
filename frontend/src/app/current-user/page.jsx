@@ -47,7 +47,7 @@ const CurrentUserPage = () => {
     <Heading as="h2" size="lg" mt={6} color="teal.400">
      My Products
     </Heading>
-    {user.products && user.products.length === 0 ? (
+    {user.user.products ? (
      <Text>User has not created any Products yet</Text>
     ) : (
      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5}>

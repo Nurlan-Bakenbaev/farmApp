@@ -47,10 +47,11 @@ const SignUp = () => {
   }
  };
 
- const handleLogin = (e) => {
+ const handleSignUp = (e) => {
   e.preventDefault();
   if (!userData.name || !userData.email || !userData.password) {
    setFormIncomplete(true);
+   router.push('/login');
    return;
   } else {
    setFormIncomplete(false);
@@ -110,7 +111,7 @@ const SignUp = () => {
       <Input isRequired type="file" accept="image/*" name="photo" onChange={handleChange} />
      </InputGroup>
      <Flex>
-      <Button isLoading={loading} onClick={handleLogin} colorScheme="purple">
+      <Button isLoading={loading} onClick={handleSignUp} colorScheme="purple">
        Sign up
       </Button>
      </Flex>

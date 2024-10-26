@@ -61,7 +61,7 @@ const CreateProductForm = () => {
    setFormData((prevFormData) => ({
     ...prevFormData,
     userId: user?.user?._id,
-    username: user.user.name
+    username: user?.user?.name
    }));
   }
  }, [user]);
@@ -143,7 +143,7 @@ const CreateProductForm = () => {
    });
   }
  };
- const backgroundColor = useColorModeValue(' #e6ffe6', 'gray.900');
+ const backgroundColor = useColorModeValue('gray.50', 'gray.900');
  useEffect(() => {
   return () => {
    filePreviews.forEach((filePreview) => URL.revokeObjectURL(filePreview));

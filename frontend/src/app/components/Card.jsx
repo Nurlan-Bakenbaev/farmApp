@@ -15,11 +15,10 @@ const CardComponent = ({ productData }) => {
  const { isOpen, onOpen, onClose } = useDisclosure();
  const dispatch = useDispatch();
  const toast = useToast();
-
  const { _id, price, minOrder, user: userId, username, category, quantity, bio, name, images, delivery, address, createdAt } = productData;
-
  const { user = {} } = useSelector((state) => state.user);
- const [liked, setLiked] = useState(user.user?.likedProducts?.includes(_id));
+ const value = JSON.parse(localStorage.getItem('user') || '{}');
+ const [liked, setLiked] = useState(value.likedProducts?.some((liked) => liked._id === _id));
  useEffect(() => {
   if (user.user?.likedProducts?.includes(_id)) {
    setLiked(true);
