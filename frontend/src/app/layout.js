@@ -11,7 +11,7 @@ export const metadata = {
  description:
   'This website connects farmers with buyers, offering a platform to showcase and sell their products and goods directly.',
  openGraph: {
-  title: 'Farmers Marketplace - Connect and Trade',
+  title: 'Eco-Farm Marketplace - Connect and Trade',
   description: 'A platform for farmers to showcase and sell their products directly to buyers.',
   url: 'https://github.com/Nurlan-Bakenbaev',
   images: [
