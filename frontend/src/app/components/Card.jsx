@@ -19,6 +19,8 @@ const CardComponent = ({ productData }) => {
  const { user = {} } = useSelector((state) => state.user);
  const value = JSON.parse(localStorage.getItem('user') || '{}');
  const [liked, setLiked] = useState(value.likedProducts?.some((liked) => liked._id === _id));
+ const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+
  useEffect(() => {
   if (user.user?.likedProducts?.includes(_id)) {
    setLiked(true);
@@ -160,10 +162,14 @@ const CardComponent = ({ productData }) => {
       </HStack>
      </HStack>
      <VStack align="start" spacing={1}>
-      <HStack>
-       <FaMapMarkerAlt color="red" />
-       <Text fontSize="xs">{address || 'No address provided'}</Text>
-      </HStack>
+      <Link href={mapUrl} target="_blank" rel="noopener noreferrer">
+       <HStack cursor="pointer">
+        <FaMapMarkerAlt className="icons" color="red" />
+        <Text fontSize="xs" fontWeight={'bold'} color={'purple'}>
+         {address || 'No address provided'}
+        </Text>
+       </HStack>
+      </Link>
       <HStack>
        <FaCalendarAlt color="gray" />
        <Text fontSize="xs">{new Date(createdAt).toLocaleDateString()}</Text>
