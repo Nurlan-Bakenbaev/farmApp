@@ -13,7 +13,7 @@ const CurrentUserPage = () => {
  if (loading || !user.user) {
   return <Loading />;
  }
-
+console.log(user)
  return (
   <Box p={5} borderRadius="lg">
    <VStack spacing={4} align="start">
@@ -47,7 +47,7 @@ const CurrentUserPage = () => {
     <Heading as="h2" size="lg" mt={6} color="teal.400">
      My Products
     </Heading>
-    {user.user.products ? (
+    {!user.user.products ? (
      <Text>User has not created any Products </Text>
     ) : (
      <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={5}>
