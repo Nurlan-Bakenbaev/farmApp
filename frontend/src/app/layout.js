@@ -27,7 +27,6 @@ export const metadata = {
   icon: '/logo.jpg'
  }
 };
-
 export default function RootLayout({ children }) {
  return (
   <html lang="en">
