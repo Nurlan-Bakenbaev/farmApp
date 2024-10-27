@@ -133,7 +133,7 @@ const CreateProductForm = () => {
     router.push('/');
    }, 3000);
   } catch (error) {
-   console.log(error);
+  
    toast({
     title: 'Error creating product.',
     description: error.message,

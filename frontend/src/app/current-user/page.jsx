@@ -13,7 +13,7 @@ const CurrentUserPage = () => {
  if (loading || !user.user) {
   return <Loading />;
  }
-console.log(user.likedProducts)
+
  return (
   <Box p={5} borderRadius="lg">
    <VStack spacing={4} align="start">

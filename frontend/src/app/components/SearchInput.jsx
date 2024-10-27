@@ -27,7 +27,7 @@ const SearchInput = () => {
  const [loading, setLoading] = useState(false);
  const { isOpen, onOpen, onClose } = useDisclosure();
  const toast = useToast();
- console.log(searchTerm);
+
  const handleSearch = async () => {
   if (searchTerm.trim()) {
    try {

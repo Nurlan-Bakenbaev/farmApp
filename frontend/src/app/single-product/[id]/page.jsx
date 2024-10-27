@@ -18,7 +18,7 @@ const SingleProductPage = () => {
  const dispatch = useDispatch();
  const { singleProduct: product, loading, error } = useSelector((state) => state.product);
  const { id: productId } = useParams();
- console.log(product);
+
  useEffect(() => {
   if (productId) {
    dispatch(getOneProduct(productId));

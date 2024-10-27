@@ -15,10 +15,10 @@ const ProductOwnerPage = () => {
     const getUserOwner = async () => {
       try {
         const res = await axios.get(`https://farmapp-1.onrender.com/user/owner/${id}`);
-        console.log(res.data.user);
+      
         setUser(res.data.user);
       } catch (error) {
-        console.log(error);
+       console.error('Failed to fetch user owner', error);
       }
     };
 
