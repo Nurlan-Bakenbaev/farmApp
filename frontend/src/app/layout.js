@@ -16,7 +16,7 @@ export const metadata = {
   url: 'https://farm-app-lime.vercel.app/',
   images: [
    {
-    url: 'https://images.unsplash.com/photo-1471193945509-9ad0617afabf?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D ',
+    url: '/public/banner.jpeg',
     width: 1200,
     height: 630,
     alt: 'Farmers showcasing their goods'
@@ -24,7 +24,7 @@ export const metadata = {
   ]
  },
  icons: {
-  icon: '/farmer.png'
+  icon: '/logo.jpg'
  }
 };
 
