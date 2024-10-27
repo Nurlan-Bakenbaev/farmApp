@@ -138,7 +138,7 @@ const SingleProductPage = () => {
      <HStack>
       <Icon as={MdPhone} boxSize={5} color="purple.500" />
       <Text fontSize="lg" fontWeight="semibold">
-       {product.telephone}
+       {`+ ${product.telephone || ' Telephon is undefined'} `}
       </Text>
      </HStack>
     </Flex>
